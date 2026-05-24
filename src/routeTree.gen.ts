@@ -10,20 +10,34 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as VehiclesRouteImport } from './routes/vehicles'
+import { Route as SignupRouteImport } from './routes/signup'
 import { Route as RobotsRouteImport } from './routes/robots'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as IpoRouteImport } from './routes/ipo'
 import { Route as CryptoRouteImport } from './routes/crypto'
 import { Route as AdminRouteImport } from './routes/admin'
+import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedAccountRouteImport } from './routes/_authenticated/account'
 
 const VehiclesRoute = VehiclesRouteImport.update({
   id: '/vehicles',
   path: '/vehicles',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RobotsRoute = RobotsRouteImport.update({
   id: '/robots',
   path: '/robots',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IpoRoute = IpoRouteImport.update({
@@ -41,10 +55,19 @@ const AdminRoute = AdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRoute = AuthenticatedRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAccountRoute = AuthenticatedAccountRouteImport.update({
+  id: '/account',
+  path: '/account',
+  getParentRoute: () => AuthenticatedRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -52,40 +75,82 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRoute
   '/crypto': typeof CryptoRoute
   '/ipo': typeof IpoRoute
+  '/login': typeof LoginRoute
   '/robots': typeof RobotsRoute
+  '/signup': typeof SignupRoute
   '/vehicles': typeof VehiclesRoute
+  '/account': typeof AuthenticatedAccountRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/crypto': typeof CryptoRoute
   '/ipo': typeof IpoRoute
+  '/login': typeof LoginRoute
   '/robots': typeof RobotsRoute
+  '/signup': typeof SignupRoute
   '/vehicles': typeof VehiclesRoute
+  '/account': typeof AuthenticatedAccountRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/admin': typeof AdminRoute
   '/crypto': typeof CryptoRoute
   '/ipo': typeof IpoRoute
+  '/login': typeof LoginRoute
   '/robots': typeof RobotsRoute
+  '/signup': typeof SignupRoute
   '/vehicles': typeof VehiclesRoute
+  '/_authenticated/account': typeof AuthenticatedAccountRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/admin' | '/crypto' | '/ipo' | '/robots' | '/vehicles'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/crypto'
+    | '/ipo'
+    | '/login'
+    | '/robots'
+    | '/signup'
+    | '/vehicles'
+    | '/account'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin' | '/crypto' | '/ipo' | '/robots' | '/vehicles'
-  id: '__root__' | '/' | '/admin' | '/crypto' | '/ipo' | '/robots' | '/vehicles'
+  to:
+    | '/'
+    | '/admin'
+    | '/crypto'
+    | '/ipo'
+    | '/login'
+    | '/robots'
+    | '/signup'
+    | '/vehicles'
+    | '/account'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/admin'
+    | '/crypto'
+    | '/ipo'
+    | '/login'
+    | '/robots'
+    | '/signup'
+    | '/vehicles'
+    | '/_authenticated/account'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   AdminRoute: typeof AdminRoute
   CryptoRoute: typeof CryptoRoute
   IpoRoute: typeof IpoRoute
+  LoginRoute: typeof LoginRoute
   RobotsRoute: typeof RobotsRoute
+  SignupRoute: typeof SignupRoute
   VehiclesRoute: typeof VehiclesRoute
 }
 
@@ -98,11 +163,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VehiclesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/robots': {
       id: '/robots'
       path: '/robots'
       fullPath: '/robots'
       preLoaderRoute: typeof RobotsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/ipo': {
@@ -126,6 +205,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -133,17 +219,49 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/account': {
+      id: '/_authenticated/account'
+      path: '/account'
+      fullPath: '/account'
+      preLoaderRoute: typeof AuthenticatedAccountRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
   }
 }
 
+interface AuthenticatedRouteChildren {
+  AuthenticatedAccountRoute: typeof AuthenticatedAccountRoute
+}
+
+const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedAccountRoute: AuthenticatedAccountRoute,
+}
+
+const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
+  AuthenticatedRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRoute: AuthenticatedRouteWithChildren,
   AdminRoute: AdminRoute,
   CryptoRoute: CryptoRoute,
   IpoRoute: IpoRoute,
+  LoginRoute: LoginRoute,
   RobotsRoute: RobotsRoute,
+  SignupRoute: SignupRoute,
   VehiclesRoute: VehiclesRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
