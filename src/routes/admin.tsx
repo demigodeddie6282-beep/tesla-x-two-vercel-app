@@ -85,10 +85,15 @@ function AdminPage({ onLogout }: { onLogout: () => void }) {
   return (
     <div className="pt-20 min-h-screen bg-background">
       <div className="max-w-7xl mx-auto px-6 md:px-10 py-12">
-        <header className="mb-10">
-          <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-2">Console</p>
-          <h1 className="text-4xl md:text-5xl font-semibold tracking-tight">Operator Dashboard</h1>
-          <p className="text-sm text-muted-foreground mt-2">Manage every listing, product and transaction across the Nexora platform.</p>
+        <header className="mb-10 flex items-start justify-between gap-4">
+          <div>
+            <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-2">Console</p>
+            <h1 className="text-4xl md:text-5xl font-semibold tracking-tight">Operator Dashboard</h1>
+            <p className="text-sm text-muted-foreground mt-2">Manage every listing, product and transaction across the Nexora platform.</p>
+          </div>
+          <button onClick={onLogout} className="shrink-0 px-4 py-2 rounded-full border border-border text-xs font-medium uppercase tracking-widest hover:bg-accent">
+            Sign out
+          </button>
         </header>
 
         <div className="grid grid-cols-2 md:grid-cols-6 gap-2 mb-8">
