@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export const Route = createFileRoute("/admin")({
   head: () => ({
@@ -8,12 +8,78 @@ export const Route = createFileRoute("/admin")({
       { name: "description", content: "Manage listings, products, prices, and transactions." },
     ],
   }),
-  component: AdminPage,
+  component: AdminGate,
 });
 
 const tabs = ["Crypto Listings", "IPO Offerings", "Vehicles", "Robotics", "Discounts", "Transactions"] as const;
 
-function AdminPage() {
+const ADMIN_ID = "Demigod6282";
+const ADMIN_PW = "Original6282";
+const SESSION_KEY = "nexora_admin_session";
+
+function AdminGate() {
+  const [authed, setAuthed] = useState(false);
+  const [hydrated, setHydrated] = useState(false);
+
+  useEffect(() => {
+    setAuthed(typeof window !== "undefined" && sessionStorage.getItem(SESSION_KEY) === "1");
+    setHydrated(true);
+  }, []);
+
+  if (!hydrated) return null;
+  if (!authed) return <LoginScreen onSuccess={() => setAuthed(true)} />;
+  return <AdminPage onLogout={() => { sessionStorage.removeItem(SESSION_KEY); setAuthed(false); }} />;
+}
+
+function LoginScreen({ onSuccess }: { onSuccess: () => void }) {
+  const [id, setId] = useState("");
+  const [pw, setPw] = useState("");
+  const [err, setErr] = useState("");
+
+  const submit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (id === ADMIN_ID && pw === ADMIN_PW) {
+      sessionStorage.setItem(SESSION_KEY, "1");
+      onSuccess();
+    } else {
+      setErr("Invalid credentials");
+    }
+  };
+
+  return (
+    <div className="pt-20 min-h-screen bg-background flex items-center justify-center px-6">
+      <form onSubmit={submit} className="w-full max-w-md rounded-3xl border border-border p-8 md:p-10">
+        <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-2">Restricted</p>
+        <h1 className="text-3xl font-semibold tracking-tight mb-2">Operator Sign-In</h1>
+        <p className="text-sm text-muted-foreground mb-8">Enter your administrator credentials to continue.</p>
+
+        <label className="block text-xs uppercase tracking-widest text-muted-foreground mb-2">Admin ID</label>
+        <input
+          autoFocus
+          value={id}
+          onChange={(e) => setId(e.target.value)}
+          className="w-full mb-5 px-4 py-3 rounded-full bg-accent text-foreground border border-border focus:outline-none focus:ring-2 focus:ring-primary"
+        />
+
+        <label className="block text-xs uppercase tracking-widest text-muted-foreground mb-2">Password</label>
+        <input
+          type="password"
+          value={pw}
+          onChange={(e) => setPw(e.target.value)}
+          className="w-full mb-6 px-4 py-3 rounded-full bg-accent text-foreground border border-border focus:outline-none focus:ring-2 focus:ring-primary"
+        />
+
+        {err && <p className="text-xs text-destructive mb-4">{err}</p>}
+
+        <button type="submit" className="w-full px-6 py-3 rounded-full bg-primary text-primary-foreground text-xs font-medium uppercase tracking-widest">
+          Enter Console
+        </button>
+      </form>
+    </div>
+  );
+}
+
+function AdminPage({ onLogout }: { onLogout: () => void }) {
   const [active, setActive] = useState<(typeof tabs)[number]>("Crypto Listings");
 
   return (
