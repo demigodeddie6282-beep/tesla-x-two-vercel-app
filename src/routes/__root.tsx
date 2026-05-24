@@ -11,6 +11,7 @@ import {
 import appCss from "../styles.css?url";
 import { SiteNav } from "@/components/SiteNav";
 import { SiteFooter } from "@/components/SiteFooter";
+import { AuthProvider } from "@/hooks/useAuth";
 
 function NotFoundComponent() {
   return (
@@ -88,11 +89,13 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   return (
     <QueryClientProvider client={queryClient}>
-      <SiteNav />
-      <main>
-        <Outlet />
-      </main>
-      <SiteFooter />
+      <AuthProvider>
+        <SiteNav />
+        <main>
+          <Outlet />
+        </main>
+        <SiteFooter />
+      </AuthProvider>
     </QueryClientProvider>
   );
 }
