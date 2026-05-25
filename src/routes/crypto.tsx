@@ -25,6 +25,50 @@ const coins = [
 
 const methods = ["USDT", "Bitcoin", "Ethereum", "Card", "Bank Transfer", "Flutterwave"];
 
+type Coin = (typeof coins)[number];
+
+function CoinCard({ c, isAuthed, navigate }: { c: Coin; isAuthed: boolean; navigate: ReturnType<typeof useNavigate> }) {
+  const [qty, setQty] = useState(100);
+  return (
+    <article className="rounded-3xl border border-border p-7 bg-background hover:border-foreground/30 transition-colors">
+      <div className="flex justify-between items-start mb-10">
+        <div className="size-12 rounded-full bg-accent grid place-items-center text-base font-semibold">{c.symbol[0]}</div>
+        {c.hot ? (
+          <span className="text-[10px] font-semibold uppercase tracking-widest px-2 py-1 rounded-full bg-foreground text-background">Hot</span>
+        ) : (
+          <span className={`text-xs font-medium tabular-nums ${c.change >= 0 ? "text-emerald-600" : "text-rose-600"}`}>
+            {c.change >= 0 ? "+" : ""}{c.change}%
+          </span>
+        )}
+      </div>
+      <h3 className="text-lg font-semibold">{c.name} <span className="text-muted-foreground font-normal">· {c.symbol}</span></h3>
+      <p className="text-sm text-muted-foreground mt-1 mb-4">{c.desc}</p>
+      <div className="flex items-center gap-2 mb-4">
+        <span className="text-xs uppercase tracking-widest text-muted-foreground">USD</span>
+        <input
+          type="number"
+          min={10}
+          value={qty}
+          onChange={(e) => setQty(Math.max(10, Number(e.target.value) || 0))}
+          className="flex-1 px-3 py-1.5 rounded-full border border-border bg-background text-sm tabular-nums"
+        />
+      </div>
+      <div className="flex items-end justify-between">
+        <div>
+          <p className="text-xs uppercase tracking-widest text-muted-foreground">Price</p>
+          <p className="text-lg font-semibold tabular-nums">${c.price}</p>
+        </div>
+        <button
+          onClick={() => startCheckout({ category: "crypto", itemName: `${c.name} (${c.symbol})`, amountUsd: qty, quantity: 1, metadata: { unitPrice: c.price } }, { isAuthed, navigate })}
+          className="px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-xs font-medium uppercase tracking-widest"
+        >
+          Buy Now
+        </button>
+      </div>
+    </article>
+  );
+}
+
 function CryptoPage() {
   const { session } = useAuth();
   const navigate = useNavigate();
