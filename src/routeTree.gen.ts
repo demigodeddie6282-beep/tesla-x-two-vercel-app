@@ -18,6 +18,7 @@ import { Route as CryptoRouteImport } from './routes/crypto'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedCheckoutRouteImport } from './routes/_authenticated/checkout'
 import { Route as AuthenticatedAccountRouteImport } from './routes/_authenticated/account'
 
 const VehiclesRoute = VehiclesRouteImport.update({
@@ -64,6 +65,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedCheckoutRoute = AuthenticatedCheckoutRouteImport.update({
+  id: '/checkout',
+  path: '/checkout',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedAccountRoute = AuthenticatedAccountRouteImport.update({
   id: '/account',
   path: '/account',
@@ -80,6 +86,7 @@ export interface FileRoutesByFullPath {
   '/signup': typeof SignupRoute
   '/vehicles': typeof VehiclesRoute
   '/account': typeof AuthenticatedAccountRoute
+  '/checkout': typeof AuthenticatedCheckoutRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -91,6 +98,7 @@ export interface FileRoutesByTo {
   '/signup': typeof SignupRoute
   '/vehicles': typeof VehiclesRoute
   '/account': typeof AuthenticatedAccountRoute
+  '/checkout': typeof AuthenticatedCheckoutRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -104,6 +112,7 @@ export interface FileRoutesById {
   '/signup': typeof SignupRoute
   '/vehicles': typeof VehiclesRoute
   '/_authenticated/account': typeof AuthenticatedAccountRoute
+  '/_authenticated/checkout': typeof AuthenticatedCheckoutRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -117,6 +126,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/vehicles'
     | '/account'
+    | '/checkout'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -128,6 +138,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/vehicles'
     | '/account'
+    | '/checkout'
   id:
     | '__root__'
     | '/'
@@ -140,6 +151,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/vehicles'
     | '/_authenticated/account'
+    | '/_authenticated/checkout'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -219,6 +231,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/checkout': {
+      id: '/_authenticated/checkout'
+      path: '/checkout'
+      fullPath: '/checkout'
+      preLoaderRoute: typeof AuthenticatedCheckoutRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/account': {
       id: '/_authenticated/account'
       path: '/account'
@@ -231,10 +250,12 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteChildren {
   AuthenticatedAccountRoute: typeof AuthenticatedAccountRoute
+  AuthenticatedCheckoutRoute: typeof AuthenticatedCheckoutRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedAccountRoute: AuthenticatedAccountRoute,
+  AuthenticatedCheckoutRoute: AuthenticatedCheckoutRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
