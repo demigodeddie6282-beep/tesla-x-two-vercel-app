@@ -43,32 +43,6 @@ function CryptoPage() {
       <section className="max-w-7xl mx-auto px-6 md:px-10 py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {coins.map((c) => <CoinCard key={c.symbol} c={c} isAuthed={!!session} navigate={navigate} />)}
-            <article key={c.symbol} className="rounded-3xl border border-border p-7 bg-background hover:border-foreground/30 transition-colors">
-              <div className="flex justify-between items-start mb-10">
-                <div className="size-12 rounded-full bg-accent grid place-items-center text-base font-semibold">
-                  {c.symbol[0]}
-                </div>
-                {c.hot ? (
-                  <span className="text-[10px] font-semibold uppercase tracking-widest px-2 py-1 rounded-full bg-foreground text-background">Hot</span>
-                ) : (
-                  <span className={`text-xs font-medium tabular-nums ${c.change >= 0 ? "text-emerald-600" : "text-rose-600"}`}>
-                    {c.change >= 0 ? "+" : ""}{c.change}%
-                  </span>
-                )}
-              </div>
-              <h3 className="text-lg font-semibold">{c.name} <span className="text-muted-foreground font-normal">· {c.symbol}</span></h3>
-              <p className="text-sm text-muted-foreground mt-1 mb-6">{c.desc}</p>
-              <div className="flex items-end justify-between">
-                <div>
-                  <p className="text-xs uppercase tracking-widest text-muted-foreground">Price</p>
-                  <p className="text-lg font-semibold tabular-nums">${c.price}</p>
-                </div>
-                <button className="px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-xs font-medium uppercase tracking-widest">
-                  Buy Now
-                </button>
-              </div>
-            </article>
-          ))}
         </div>
 
         <div className="mt-16 rounded-3xl bg-accent p-10">
