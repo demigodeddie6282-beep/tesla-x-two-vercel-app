@@ -1,10 +1,13 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useState } from "react";
 import heroCrypto from "@/assets/hero-crypto.jpg";
+import { useAuth } from "@/hooks/useAuth";
+import { startCheckout } from "@/lib/checkout";
 
 export const Route = createFileRoute("/crypto")({
   head: () => ({
     meta: [
-      { title: "Crypto Listings — Nexora" },
+      { title: "Crypto Listings — Tesla" },
       { name: "description", content: "Buy newly launched tokens and AI-tech coins. Pay with USDT, BTC, ETH, card or bank transfer." },
     ],
   }),
@@ -23,6 +26,9 @@ const coins = [
 const methods = ["USDT", "Bitcoin", "Ethereum", "Card", "Bank Transfer", "Flutterwave"];
 
 function CryptoPage() {
+  const { session } = useAuth();
+  const navigate = useNavigate();
+
   return (
     <div>
       <section className="relative min-h-[70svh] flex items-end pb-20 overflow-hidden">
@@ -36,7 +42,7 @@ function CryptoPage() {
 
       <section className="max-w-7xl mx-auto px-6 md:px-10 py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {coins.map((c) => (
+          {coins.map((c) => <CoinCard key={c.symbol} c={c} isAuthed={!!session} navigate={navigate} />)}
             <article key={c.symbol} className="rounded-3xl border border-border p-7 bg-background hover:border-foreground/30 transition-colors">
               <div className="flex justify-between items-start mb-10">
                 <div className="size-12 rounded-full bg-accent grid place-items-center text-base font-semibold">
