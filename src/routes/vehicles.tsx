@@ -1,12 +1,14 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import heroVehicles from "@/assets/hero-vehicles.jpg";
 import heroMain from "@/assets/hero-main.jpg";
+import { useAuth } from "@/hooks/useAuth";
+import { startCheckout } from "@/lib/checkout";
 
 export const Route = createFileRoute("/vehicles")({
   head: () => ({
     meta: [
-      { title: "Vehicles — Nexora" },
+      { title: "Vehicles — Tesla" },
       { name: "description", content: "Order autonomous luxury vehicles. Bulk pricing for fleet acquisitions." },
     ],
   }),
@@ -27,6 +29,8 @@ function priceFor(qty: number, base: number) {
 
 function VehicleCard({ v }: { v: typeof fleet[number] }) {
   const [qty, setQty] = useState(1);
+  const { session } = useAuth();
+  const navigate = useNavigate();
   const unit = priceFor(qty, v.price);
   const discount = qty >= 3;
   return (
@@ -58,7 +62,10 @@ function VehicleCard({ v }: { v: typeof fleet[number] }) {
           </span>
         </div>
         <div className="flex gap-2">
-          <button className="flex-1 py-3 rounded-full bg-primary text-primary-foreground text-sm font-medium uppercase tracking-widest">
+          <button
+            onClick={() => startCheckout({ category: "vehicle", itemName: v.name, amountUsd: unit, quantity: qty, metadata: { tagline: v.tagline } }, { isAuthed: !!session, navigate })}
+            className="flex-1 py-3 rounded-full bg-primary text-primary-foreground text-sm font-medium uppercase tracking-widest"
+          >
             Reserve
           </button>
           <button className="px-6 py-3 rounded-full border border-border text-sm font-medium uppercase tracking-widest hover:bg-accent">
