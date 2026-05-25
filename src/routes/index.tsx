@@ -9,7 +9,7 @@ import heroIpo from "@/assets/hero-ipo.jpg";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Nexora — The Future of Wealth & Intelligence" },
+      { title: "Tesla — The Future of Wealth & Intelligence" },
       { name: "description", content: "Access tomorrow's technology today. Vehicles, robotics, crypto and IPO opportunities." },
     ],
   }),
@@ -21,7 +21,7 @@ function Index() {
     <div className="w-full">
       <HeroPanel
         image={heroMain}
-        eyebrow="Nexora Vanguard"
+        eyebrow="Tesla Vanguard"
         title="The Architecture of Wealth"
         subtitle="A unified marketplace for the future — robotics, autonomous vehicles, emerging assets and frontier ventures."
         primaryLabel="Explore Marketplace"
