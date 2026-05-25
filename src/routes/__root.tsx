@@ -61,9 +61,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Nexora — The Future of Wealth & Intelligence" },
-      { name: "description", content: "Nexora is a next-generation marketplace for AI robotics, futuristic vehicles, crypto, and IPO investments." },
-      { property: "og:title", content: "Nexora — The Future of Wealth & Intelligence" },
+      { title: "Tesla — The Future of Wealth & Intelligence" },
+      { name: "description", content: "Tesla is a next-generation marketplace for AI robotics, futuristic vehicles, crypto, and IPO investments." },
+      { property: "og:title", content: "Tesla — The Future of Wealth & Intelligence" },
       { property: "og:description", content: "Marketplace for AI robotics, futuristic vehicles, crypto and IPO investments." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

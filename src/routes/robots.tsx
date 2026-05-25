@@ -1,10 +1,12 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import heroRobots from "@/assets/hero-robots.jpg";
+import { useAuth } from "@/hooks/useAuth";
+import { startCheckout } from "@/lib/checkout";
 
 export const Route = createFileRoute("/robots")({
   head: () => ({
     meta: [
-      { title: "Robotics — Nexora" },
+      { title: "Robotics — Tesla" },
       { name: "description", content: "Humanoid AI robots for domestic, industrial, and enterprise deployment." },
     ],
   }),
@@ -19,6 +21,8 @@ const units = [
 ];
 
 function RobotsPage() {
+  const { session } = useAuth();
+  const navigate = useNavigate();
   return (
     <div>
       <section className="relative min-h-[80svh] flex items-end pb-20 overflow-hidden">
@@ -50,7 +54,10 @@ function RobotsPage() {
                   <p className="text-2xl font-semibold tabular-nums">${u.price.toLocaleString()}</p>
                 </div>
                 <div className="flex gap-2">
-                  <button className="px-6 py-3 rounded-full bg-primary text-primary-foreground text-sm font-medium uppercase tracking-widest">Reserve</button>
+                  <button
+                    onClick={() => startCheckout({ category: "robot", itemName: u.name, amountUsd: u.price, quantity: 1, metadata: { category: u.category } }, { isAuthed: !!session, navigate })}
+                    className="px-6 py-3 rounded-full bg-primary text-primary-foreground text-sm font-medium uppercase tracking-widest"
+                  >Reserve</button>
                   <button className="px-6 py-3 rounded-full border border-border text-sm font-medium uppercase tracking-widest hover:bg-accent">Bulk Quote</button>
                 </div>
               </div>

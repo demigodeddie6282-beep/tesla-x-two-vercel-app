@@ -1,5 +1,5 @@
 const cols = [
-  ["Nexora", ["About", "Careers", "Newsroom", "Investor Relations"]],
+  ["Tesla", ["About", "Careers", "Newsroom", "Investor Relations"]],
   ["Marketplace", ["Vehicles", "Robotics", "Crypto", "IPO Access"]],
   ["Support", ["Contact", "Customer Service", "Find Us", "Legal"]],
   ["Connect", ["Locations", "Events", "Forum", "Subscribe"]],
@@ -28,7 +28,7 @@ export function SiteFooter() {
           ))}
         </div>
         <div className="mt-14 pt-8 border-t border-border flex flex-col md:flex-row justify-between gap-4 text-xs text-muted-foreground">
-          <span>Nexora © {new Date().getFullYear()}. The Future of Wealth & Intelligence.</span>
+          <span>Tesla © {new Date().getFullYear()}. The Future of Wealth & Intelligence.</span>
           <div className="flex gap-6">
             <a href="#" className="hover:text-foreground">Privacy</a>
             <a href="#" className="hover:text-foreground">Terms</a>

@@ -17,8 +17,8 @@ export function SiteNav() {
   return (
     <header className="fixed top-0 inset-x-0 z-50">
       <nav className="flex items-center justify-between px-6 md:px-10 h-16 text-foreground">
-        <Link to="/" className="text-[22px] font-extrabold tracking-tight">
-          Nexora
+        <Link to="/" className="text-[22px] font-extrabold tracking-tight text-primary">
+          TESLA
         </Link>
 
         <div className="hidden md:flex items-center gap-2">

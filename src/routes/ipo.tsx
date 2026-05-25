@@ -1,10 +1,12 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import heroIpo from "@/assets/hero-ipo.jpg";
+import { useAuth } from "@/hooks/useAuth";
+import { startCheckout } from "@/lib/checkout";
 
 export const Route = createFileRoute("/ipo")({
   head: () => ({
     meta: [
-      { title: "IPO & Stock Opportunities — Nexora" },
+      { title: "IPO & Stock Opportunities — Tesla" },
       { name: "description", content: "Pre-market positions in AI, robotics, aerospace and biotech ventures." },
     ],
   }),
@@ -19,6 +21,8 @@ const offerings = [
 ];
 
 function IpoPage() {
+  const { session } = useAuth();
+  const navigate = useNavigate();
   return (
     <div className="bg-foreground text-background">
       <section className="relative min-h-[70svh] flex items-end pb-20 overflow-hidden">
@@ -53,7 +57,10 @@ function IpoPage() {
                   <p className="text-[10px] uppercase tracking-widest opacity-60">Min. Allocation</p>
                   <p className="text-xl font-semibold tabular-nums">${o.min.toLocaleString()}</p>
                 </div>
-                <button className="px-5 py-2.5 rounded-full bg-background text-foreground text-xs font-medium uppercase tracking-widest">
+                <button
+                  onClick={() => startCheckout({ category: "ipo", itemName: o.name, amountUsd: o.min, quantity: 1, metadata: { sector: o.sector, status: o.status } }, { isAuthed: !!session, navigate })}
+                  className="px-5 py-2.5 rounded-full bg-background text-foreground text-xs font-medium uppercase tracking-widest"
+                >
                   Reserve
                 </button>
               </div>
