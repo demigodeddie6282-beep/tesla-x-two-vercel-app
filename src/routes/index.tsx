@@ -1,16 +1,22 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { HeroPanel } from "@/components/HeroPanel";
-import heroMain from "@/assets/hero-main.jpg";
-import heroVehicles from "@/assets/hero-vehicles.jpg";
-import heroRobots from "@/assets/hero-robots.jpg";
-import heroCrypto from "@/assets/hero-crypto.jpg";
-import heroIpo from "@/assets/hero-ipo.jpg";
+import modelY from "@/assets/model-y.jpg";
+import modelS from "@/assets/model-s.jpg";
+import model3 from "@/assets/model-3.jpg";
+import modelX from "@/assets/model-x.jpg";
+import cybertruck from "@/assets/cybertruck.jpg";
+import semi from "@/assets/semi.jpg";
+import roadster from "@/assets/roadster.jpg";
+import powerwall from "@/assets/powerwall.jpg";
+import solarRoof from "@/assets/solar-roof.jpg";
+import megapack from "@/assets/megapack.jpg";
+import charging from "@/assets/charging.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Tesla — The Future of Wealth & Intelligence" },
-      { name: "description", content: "Access tomorrow's technology today. Vehicles, robotics, crypto and IPO opportunities." },
+      { title: "Tesla — Electric Cars, Solar & Clean Energy" },
+      { name: "description", content: "Tesla is accelerating the world's transition to sustainable energy with electric cars, solar and integrated renewable energy solutions." },
     ],
   }),
   component: Index,
@@ -19,60 +25,17 @@ export const Route = createFileRoute("/")({
 function Index() {
   return (
     <div className="w-full">
-      <HeroPanel
-        image={heroMain}
-        eyebrow="Tesla Vanguard"
-        title="The Architecture of Wealth"
-        subtitle="A unified marketplace for the future — robotics, autonomous vehicles, emerging assets and frontier ventures."
-        primaryLabel="Explore Marketplace"
-        primaryTo="/vehicles"
-        secondaryLabel="View Investments"
-        secondaryTo="/ipo"
-      />
-
-      <HeroPanel
-        image={heroVehicles}
-        title="Future Fleet"
-        subtitle="Autonomous luxury platforms engineered for the next century."
-        primaryLabel="Order Now"
-        primaryTo="/vehicles"
-        secondaryLabel="Bulk Pricing"
-        secondaryTo="/vehicles"
-      />
-
-      <HeroPanel
-        image={heroRobots}
-        title="Neural Robotics"
-        subtitle="Humanoid systems for the home, industry, and beyond."
-        primaryLabel="Configure Unit"
-        primaryTo="/robots"
-        secondaryLabel="Enterprise"
-        secondaryTo="/robots"
-      />
-
-      <HeroPanel
-        image={heroCrypto}
-        eyebrow="Newly Listed"
-        title="Tomorrow's Liquidity"
-        subtitle="Early access to emerging tokens, AI protocols and digital assets."
-        primaryLabel="View Listings"
-        primaryTo="/crypto"
-        secondaryLabel="Buy Now"
-        secondaryTo="/crypto"
-      />
-
-      <HeroPanel
-        image={heroIpo}
-        eyebrow="Institutional Access"
-        title="Frontier IPOs"
-        subtitle="Pre-market positions in AI, robotics, aerospace and biotech."
-        primaryLabel="Investor Portal"
-        primaryTo="/ipo"
-        secondaryLabel="Open Offerings"
-        secondaryTo="/ipo"
-        textColor="light"
-        theme="dark"
-      />
+      <HeroPanel image={modelY} eyebrow="New" title="Model Y" subtitle="The best-selling car in the world." primaryLabel="Order Now" primaryTo="/vehicles" secondaryLabel="Learn More" secondaryTo="/vehicles" />
+      <HeroPanel image={model3} title="Model 3" subtitle="Lease starting at $349/mo." primaryLabel="Order Now" primaryTo="/vehicles" secondaryLabel="Demo Drive" secondaryTo="/vehicles" />
+      <HeroPanel image={modelS} title="Model S" subtitle="Plaid — 0–60 mph in 1.99 s." primaryLabel="Order Now" primaryTo="/vehicles" secondaryLabel="Learn More" secondaryTo="/vehicles" />
+      <HeroPanel image={modelX} title="Model X" subtitle="Falcon Wing doors. Tri-Motor performance." primaryLabel="Order Now" primaryTo="/vehicles" secondaryLabel="Learn More" secondaryTo="/vehicles" textColor="light" />
+      <HeroPanel image={cybertruck} title="Cybertruck" subtitle="Built for any planet." primaryLabel="Order Now" primaryTo="/vehicles" secondaryLabel="Learn More" secondaryTo="/vehicles" textColor="light" />
+      <HeroPanel image={semi} title="Tesla Semi" subtitle="Class 8 freight. 500-mile range." primaryLabel="Reserve" primaryTo="/vehicles" secondaryLabel="Specs" secondaryTo="/vehicles" />
+      <HeroPanel image={roadster} eyebrow="Coming Soon" title="Roadster" subtitle="The quickest car in the world." primaryLabel="Reserve" primaryTo="/vehicles" secondaryLabel="Learn More" secondaryTo="/vehicles" textColor="light" />
+      <HeroPanel image={powerwall} title="Powerwall" subtitle="Power your home around the clock." primaryLabel="Order Now" primaryTo="/energy" secondaryLabel="Learn More" secondaryTo="/energy" />
+      <HeroPanel image={solarRoof} title="Solar Roof" subtitle="Produce clean energy from your roof." primaryLabel="Order Now" primaryTo="/energy" secondaryLabel="Learn More" secondaryTo="/energy" />
+      <HeroPanel image={megapack} title="Megapack" subtitle="Massive energy storage for utilities." primaryLabel="Learn More" primaryTo="/energy" textColor="light" />
+      <HeroPanel image={charging} title="Supercharging" subtitle="Charge in minutes, not hours." primaryLabel="Find a Supercharger" primaryTo="/charging" secondaryLabel="Home Charging" secondaryTo="/charging" textColor="light" />
     </div>
   );
 }
