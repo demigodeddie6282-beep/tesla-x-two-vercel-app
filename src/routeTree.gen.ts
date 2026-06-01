@@ -14,7 +14,9 @@ import { Route as SignupRouteImport } from './routes/signup'
 import { Route as RobotsRouteImport } from './routes/robots'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as IpoRouteImport } from './routes/ipo'
+import { Route as EnergyRouteImport } from './routes/energy'
 import { Route as CryptoRouteImport } from './routes/crypto'
+import { Route as ChargingRouteImport } from './routes/charging'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
@@ -46,9 +48,19 @@ const IpoRoute = IpoRouteImport.update({
   path: '/ipo',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EnergyRoute = EnergyRouteImport.update({
+  id: '/energy',
+  path: '/energy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CryptoRoute = CryptoRouteImport.update({
   id: '/crypto',
   path: '/crypto',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ChargingRoute = ChargingRouteImport.update({
+  id: '/charging',
+  path: '/charging',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminRoute = AdminRouteImport.update({
@@ -79,7 +91,9 @@ const AuthenticatedAccountRoute = AuthenticatedAccountRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
+  '/charging': typeof ChargingRoute
   '/crypto': typeof CryptoRoute
+  '/energy': typeof EnergyRoute
   '/ipo': typeof IpoRoute
   '/login': typeof LoginRoute
   '/robots': typeof RobotsRoute
@@ -91,7 +105,9 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
+  '/charging': typeof ChargingRoute
   '/crypto': typeof CryptoRoute
+  '/energy': typeof EnergyRoute
   '/ipo': typeof IpoRoute
   '/login': typeof LoginRoute
   '/robots': typeof RobotsRoute
@@ -105,7 +121,9 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/admin': typeof AdminRoute
+  '/charging': typeof ChargingRoute
   '/crypto': typeof CryptoRoute
+  '/energy': typeof EnergyRoute
   '/ipo': typeof IpoRoute
   '/login': typeof LoginRoute
   '/robots': typeof RobotsRoute
@@ -119,7 +137,9 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/admin'
+    | '/charging'
     | '/crypto'
+    | '/energy'
     | '/ipo'
     | '/login'
     | '/robots'
@@ -131,7 +151,9 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/admin'
+    | '/charging'
     | '/crypto'
+    | '/energy'
     | '/ipo'
     | '/login'
     | '/robots'
@@ -144,7 +166,9 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/admin'
+    | '/charging'
     | '/crypto'
+    | '/energy'
     | '/ipo'
     | '/login'
     | '/robots'
@@ -158,7 +182,9 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   AdminRoute: typeof AdminRoute
+  ChargingRoute: typeof ChargingRoute
   CryptoRoute: typeof CryptoRoute
+  EnergyRoute: typeof EnergyRoute
   IpoRoute: typeof IpoRoute
   LoginRoute: typeof LoginRoute
   RobotsRoute: typeof RobotsRoute
@@ -203,11 +229,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IpoRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/energy': {
+      id: '/energy'
+      path: '/energy'
+      fullPath: '/energy'
+      preLoaderRoute: typeof EnergyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/crypto': {
       id: '/crypto'
       path: '/crypto'
       fullPath: '/crypto'
       preLoaderRoute: typeof CryptoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/charging': {
+      id: '/charging'
+      path: '/charging'
+      fullPath: '/charging'
+      preLoaderRoute: typeof ChargingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin': {
@@ -266,7 +306,9 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   AdminRoute: AdminRoute,
+  ChargingRoute: ChargingRoute,
   CryptoRoute: CryptoRoute,
+  EnergyRoute: EnergyRoute,
   IpoRoute: IpoRoute,
   LoginRoute: LoginRoute,
   RobotsRoute: RobotsRoute,

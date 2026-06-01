@@ -1,7 +1,12 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import heroVehicles from "@/assets/hero-vehicles.jpg";
-import heroMain from "@/assets/hero-main.jpg";
+import modelS from "@/assets/model-s.jpg";
+import model3 from "@/assets/model-3.jpg";
+import modelY from "@/assets/model-y.jpg";
+import modelX from "@/assets/model-x.jpg";
+import cybertruck from "@/assets/cybertruck.jpg";
+import semi from "@/assets/semi.jpg";
+import roadster from "@/assets/roadster.jpg";
 import { useAuth } from "@/hooks/useAuth";
 import { startCheckout } from "@/lib/checkout";
 
@@ -9,21 +14,25 @@ export const Route = createFileRoute("/vehicles")({
   head: () => ({
     meta: [
       { title: "Vehicles — Tesla" },
-      { name: "description", content: "Order autonomous luxury vehicles. Bulk pricing for fleet acquisitions." },
+      { name: "description", content: "Order Tesla Model S, Model 3, Model Y, Model X, Cybertruck, Semi and Roadster. Bulk pricing for fleet acquisitions." },
     ],
   }),
   component: VehiclesPage,
 });
 
 const fleet = [
-  { id: "phantom-s", name: "Phantom S", tagline: "Autonomous Grand Tourer", price: 240000, image: heroVehicles },
-  { id: "vanguard-x", name: "Vanguard X", tagline: "All-terrain Electric Platform", price: 180000, image: heroMain },
-  { id: "strike-r", name: "Strike R", tagline: "Track-Spec Hypercar", price: 410000, image: heroVehicles },
+  { id: "model-s", name: "Model S", tagline: "Plaid Tri-Motor · 1,020 hp · 396 mi range", price: 79990, image: modelS },
+  { id: "model-3", name: "Model 3", tagline: "Long Range AWD · 341 mi range", price: 42490, image: model3 },
+  { id: "model-y", name: "Model Y", tagline: "Best-selling EV · 320 mi range", price: 44990, image: modelY },
+  { id: "model-x", name: "Model X", tagline: "Falcon Wing · 348 mi range", price: 84990, image: modelX },
+  { id: "cybertruck", name: "Cybertruck", tagline: "All-electric pickup · 340 mi range", price: 79990, image: cybertruck },
+  { id: "semi", name: "Tesla Semi", tagline: "Class 8 freight · 500 mi range", price: 180000, image: semi },
+  { id: "roadster", name: "Roadster", tagline: "0–60 in 1.9s · 250+ mph", price: 200000, image: roadster },
 ];
 
 function priceFor(qty: number, base: number) {
-  if (qty >= 5) return Math.round(base * 0.4);
-  if (qty >= 3) return Math.round(base * 0.5);
+  if (qty >= 5) return Math.round(base * 0.5);
+  if (qty >= 3) return Math.round(base * 0.6);
   return base;
 }
 
@@ -58,7 +67,7 @@ function VehicleCard({ v }: { v: typeof fleet[number] }) {
             <button className="px-3 py-1 hover:bg-accent" onClick={() => setQty(qty + 1)}>+</button>
           </div>
           <span className="ml-auto text-xs text-muted-foreground">
-            Buy 3+ <span className="text-foreground font-medium">−50%</span> · 5+ <span className="text-foreground font-medium">−60%</span>
+            3+ <span className="text-foreground font-medium">−40%</span> · 5+ <span className="text-foreground font-medium">−50%</span>
           </span>
         </div>
         <div className="flex gap-2">
@@ -66,10 +75,10 @@ function VehicleCard({ v }: { v: typeof fleet[number] }) {
             onClick={() => startCheckout({ category: "vehicle", itemName: v.name, amountUsd: unit, quantity: qty, metadata: { tagline: v.tagline } }, { isAuthed: !!session, navigate })}
             className="flex-1 py-3 rounded-full bg-primary text-primary-foreground text-sm font-medium uppercase tracking-widest"
           >
-            Reserve
+            Order Now
           </button>
           <button className="px-6 py-3 rounded-full border border-border text-sm font-medium uppercase tracking-widest hover:bg-accent">
-            Quote
+            Demo Drive
           </button>
         </div>
       </div>
@@ -81,11 +90,12 @@ function VehiclesPage() {
   return (
     <div>
       <section className="relative min-h-[70svh] flex items-end pb-20 overflow-hidden">
-        <img src={heroVehicles} alt="" className="absolute inset-0 w-full h-full object-cover" />
-        <div className="relative z-10 max-w-7xl mx-auto w-full px-6 md:px-10 text-white">
-          <p className="text-xs uppercase tracking-[0.2em] mb-3 opacity-80">Marketplace</p>
-          <h1 className="text-5xl md:text-7xl font-semibold tracking-tight">Future Fleet</h1>
-          <p className="mt-4 max-w-xl text-white/85">Autonomous luxury, hyperdrive sport, and long-range electric platforms — built for the next century.</p>
+        <img src={modelS} alt="" className="absolute inset-0 w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
+        <div className="relative z-10 max-w-7xl mx-auto w-full px-6 md:px-10">
+          <p className="text-xs uppercase tracking-[0.2em] mb-3 text-foreground/70">Vehicles</p>
+          <h1 className="text-5xl md:text-7xl font-semibold tracking-tight text-foreground">The Tesla Lineup</h1>
+          <p className="mt-4 max-w-xl text-foreground/70">Sedans, SUVs, trucks and hypercars — all electric, all autonomous-ready.</p>
         </div>
       </section>
 
@@ -96,7 +106,7 @@ function VehiclesPage() {
 
         <div className="mt-16 rounded-3xl bg-accent p-10 md:p-14 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div>
-            <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-2">VIP Program</p>
+            <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-2">Fleet Program</p>
             <h3 className="text-2xl md:text-3xl font-semibold tracking-tight">Bulk acquisitions for institutional partners.</h3>
             <p className="text-sm text-muted-foreground mt-2 max-w-xl">Tiered fleet pricing, dedicated concierge, priority delivery worldwide.</p>
           </div>
