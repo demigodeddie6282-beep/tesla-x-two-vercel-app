@@ -9,7 +9,7 @@ const links = [
   { to: "/charging", label: "Charging" },
   { to: "/robots", label: "Robotics" },
   { to: "/crypto", label: "Crypto" },
-  { to: "/ipo", label: "Investments" },
+  { to: "/ipo", label: "Coins & IPO" },
 ];
 
 export function SiteNav() {
