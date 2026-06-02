@@ -2,21 +2,17 @@ import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import heroIpo from "@/assets/hero-ipo.jpg";
 import { useAuth } from "@/hooks/useAuth";
-import { supabase } from "@/integrations/supabase/client";
-import { toast } from "sonner";
+import { PaymentModal, type PaymentItem } from "@/components/PaymentModal";
 
 export const Route = createFileRoute("/ipo")({
   head: () => ({
     meta: [
       { title: "Tesla Coins & IPO Stock — Buy Now" },
-      { name: "description", content: "Buy Tesla-backed coins and pre-IPO stock. $500 minimum. Pay securely via Flutterwave." },
+      { name: "description", content: "Buy Tesla-backed coins and pre-IPO stock. $500 minimum. Pay by card, crypto or bank transfer." },
     ],
   }),
   component: IpoPage,
 });
-
-// 👉 Paste your Flutterwave payment link here (e.g. https://flutterwave.com/pay/xxxxxx)
-const FLUTTERWAVE_PAYMENT_URL = "https://flutterwave.com/pay/REPLACE_ME";
 
 const MIN_PURCHASE_USD = 500;
 
@@ -60,7 +56,7 @@ function IpoPage() {
           <p className="text-xs uppercase tracking-[0.2em] mb-3 opacity-70">Pre-IPO · Open Allocation</p>
           <h1 className="text-5xl md:text-7xl font-semibold tracking-tight">Tesla Coins</h1>
           <p className="mt-4 max-w-xl text-background/80">
-            Own a stake in Tesla's next chapter. Choose a coin, pick your quantity, pay securely. Minimum purchase ${MIN_PURCHASE_USD.toLocaleString()}.
+            Own a stake in Tesla's next chapter. Pick a coin, choose your quantity, pay securely. Minimum ${MIN_PURCHASE_USD.toLocaleString()}.
           </p>
         </div>
       </section>
@@ -73,7 +69,7 @@ function IpoPage() {
         </div>
 
         <p className="mt-10 text-xs text-background/60 max-w-2xl">
-          Payments are processed securely through Flutterwave. International buyers can pay via card, bank transfer or USSD. Your order is recorded as pending and confirmed once payment is verified.
+          Pay by card, crypto (BTC, ETH, USDT, DOGE) or bank transfer. Card and crypto orders are credited instantly. Bank-transfer orders remain pending until our team verifies the uploaded payment slip.
         </p>
       </section>
     </div>
@@ -85,49 +81,31 @@ function CoinCard({ coin }: { coin: (typeof coins)[number] }) {
   const navigate = useNavigate();
   const minQty = Math.ceil(MIN_PURCHASE_USD / coin.price);
   const [qty, setQty] = useState<number>(minQty);
-  const [loading, setLoading] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const total = useMemo(() => qty * coin.price, [qty, coin.price]);
   const belowMin = total < MIN_PURCHASE_USD;
 
-  async function handlePay() {
+  function openPay() {
     if (!session) {
       navigate({ to: "/login" });
       return;
     }
-    if (belowMin) {
-      toast.error(`Minimum purchase is $${MIN_PURCHASE_USD}`);
-      return;
-    }
-    setLoading(true);
-    try {
-      const { error } = await supabase.from("transactions").insert({
-        user_id: session.user.id,
-        category: "ipo",
-        item_name: `${coin.name} (${coin.symbol})`,
-        quantity: qty,
-        amount_usd: Number(total.toFixed(2)),
-        status: "pending",
-        metadata: {
-          coin_id: coin.id,
-          symbol: coin.symbol,
-          unit_price: coin.price,
-          chain: coin.chain,
-          payment_provider: "flutterwave",
-        },
-      });
-      if (error) throw error;
-      toast.success("Order created. Redirecting to Flutterwave…");
-      setTimeout(() => {
-        window.location.href = FLUTTERWAVE_PAYMENT_URL;
-      }, 600);
-    } catch (e) {
-      const msg = e instanceof Error ? e.message : "Failed to create order";
-      toast.error(msg);
-    } finally {
-      setLoading(false);
-    }
+    setModalOpen(true);
   }
+
+  const item: PaymentItem = {
+    category: "ipo",
+    itemName: `${coin.name} (${coin.symbol})`,
+    amountUsd: Number(total.toFixed(2)),
+    quantity: qty,
+    metadata: {
+      coin_id: coin.id,
+      symbol: coin.symbol,
+      unit_price: coin.price,
+      chain: coin.chain,
+    },
+  };
 
   return (
     <article className="rounded-3xl border border-background/15 p-7 flex flex-col gap-5 bg-background/[0.02]">
@@ -191,11 +169,11 @@ function CoinCard({ coin }: { coin: (typeof coins)[number] }) {
       </div>
 
       <button
-        onClick={handlePay}
-        disabled={loading || belowMin}
+        onClick={openPay}
+        disabled={belowMin}
         className="w-full py-3.5 rounded-full bg-primary text-primary-foreground text-sm font-semibold uppercase tracking-widest disabled:opacity-50"
       >
-        {loading ? "Processing…" : belowMin ? `Min $${MIN_PURCHASE_USD}` : "Pay with Flutterwave"}
+        {belowMin ? `Min $${MIN_PURCHASE_USD}` : "Pay"}
       </button>
 
       {!session && (
@@ -203,6 +181,13 @@ function CoinCard({ coin }: { coin: (typeof coins)[number] }) {
           <Link to="/login" className="underline">Sign in</Link> to complete your purchase
         </p>
       )}
+
+      <PaymentModal
+        item={item}
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        onSuccess={() => { /* stays open on success step */ }}
+      />
     </article>
   );
 }

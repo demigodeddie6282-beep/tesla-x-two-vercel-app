@@ -48,6 +48,15 @@ function AccountPage() {
 
   const grouped = (cat: string) => txs.filter((t: any) => t.category === cat);
 
+  // Aggregate paid coin holdings (IPO + crypto) by symbol
+  const coinHoldings = new Map<string, number>();
+  txs.forEach((t: any) => {
+    if ((t.category === "ipo" || t.category === "crypto") && (t.status === "paid" || t.status === "fulfilled")) {
+      const sym = (t.metadata?.symbol as string) ?? t.item_name;
+      coinHoldings.set(sym, (coinHoldings.get(sym) ?? 0) + Number(t.quantity));
+    }
+  });
+
   return (
     <div className="pt-20 min-h-screen bg-background">
       <div className="max-w-6xl mx-auto px-6 md:px-10 py-12">
@@ -64,15 +73,31 @@ function AccountPage() {
           </button>
         </header>
 
+        {coinHoldings.size > 0 && (
+          <section className="mb-10">
+            <h2 className="text-sm font-semibold uppercase tracking-widest mb-4">My Coins</h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              {[...coinHoldings.entries()].map(([sym, qty]) => (
+                <div key={sym} className="rounded-2xl border border-border p-5 bg-background">
+                  <p className="text-xs uppercase tracking-widest text-muted-foreground">{sym}</p>
+                  <p className="text-2xl font-semibold mt-1 tabular-nums">{qty.toLocaleString()}</p>
+                  <p className="text-[11px] text-muted-foreground mt-1">credited</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
         <div className="grid md:grid-cols-4 gap-4 mb-10">
           {CATEGORIES.map((c) => (
             <div key={c.key} className="rounded-2xl border border-border p-5">
               <p className="text-xs uppercase tracking-widest text-muted-foreground">{c.label}</p>
               <p className="text-3xl font-semibold mt-2 tabular-nums">{grouped(c.key).length}</p>
-              <p className="text-xs text-muted-foreground mt-1">records</p>
+              <p className="text-xs text-muted-foreground mt-1">orders</p>
             </div>
           ))}
         </div>
+
 
         <section className="rounded-3xl border border-border p-6 md:p-8">
           <h2 className="text-2xl font-semibold tracking-tight mb-6">Your activity</h2>
