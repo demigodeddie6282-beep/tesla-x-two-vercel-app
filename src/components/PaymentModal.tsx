@@ -13,6 +13,7 @@ export interface PaymentItem {
 }
 
 type Method = "online" | "crypto" | "bank";
+type TxStatus = "pending" | "paid";
 
 export function PaymentModal({
   item,
@@ -29,12 +30,12 @@ export function PaymentModal({
   const [method, setMethod] = useState<Method>("online");
   const [stage, setStage] = useState<"choose" | "online" | "crypto" | "bank" | "success">("choose");
   const [submitting, setSubmitting] = useState(false);
-  const [selectedCrypto, setSelectedCrypto] = useState(CRYPTO_WALLETS[0].symbol);
+  const [selectedCrypto, setSelectedCrypto] = useState<string>(CRYPTO_WALLETS[0].symbol);
   const [file, setFile] = useState<File | null>(null);
 
   if (!open) return null;
 
-  async function insertTx(opts: { status: "pending" | "completed"; extra: Record<string, unknown> }) {
+  async function insertTx(opts: { status: TxStatus; extra: Record<string, unknown> }) {
     if (!user) throw new Error("Not signed in");
     const { data, error } = await supabase
       .from("transactions")
@@ -45,7 +46,7 @@ export function PaymentModal({
         amount_usd: Number(item.amountUsd.toFixed(2)),
         quantity: item.quantity,
         status: opts.status,
-        metadata: { ...(item.metadata ?? {}), ...opts.extra },
+        metadata: { ...(item.metadata ?? {}), ...opts.extra } as never,
       })
       .select("id")
       .single();
@@ -56,7 +57,7 @@ export function PaymentModal({
   async function handleOnlineConfirm() {
     setSubmitting(true);
     try {
-      await insertTx({ status: "completed", extra: { method: "online" } });
+      await insertTx({ status: "paid", extra: { method: "online" } });
       setStage("success");
       onSuccess?.();
     } catch (e) {
@@ -71,7 +72,7 @@ export function PaymentModal({
     try {
       const w = CRYPTO_WALLETS.find((x) => x.symbol === selectedCrypto)!;
       await insertTx({
-        status: "completed",
+        status: "paid",
         extra: { method: "crypto", crypto_symbol: w.symbol, wallet_address: w.address },
       });
       setStage("success");
