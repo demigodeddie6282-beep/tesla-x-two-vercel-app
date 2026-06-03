@@ -29,20 +29,23 @@ export const Route = createFileRoute("/")({
 function IntroVideo() {
   return (
     <section className="relative min-h-[100svh] w-full overflow-hidden bg-black">
-      <iframe
-        title="Tesla intro"
-        className="absolute inset-0 w-full h-full"
-        src="https://www.youtube.com/embed/IpzU7nl5jE4?autoplay=1&mute=1&loop=1&playlist=IpzU7nl5jE4&controls=0&modestbranding=1&playsinline=1&rel=0"
-        allow="autoplay; encrypted-media; picture-in-picture"
-        allowFullScreen
+      <video
+        className="absolute inset-0 w-full h-full object-cover"
+        src="https://videos.pexels.com/video-files/2099568/2099568-uhd_2560_1440_30fps.mp4"
+        poster={modelS}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/70 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/80 pointer-events-none" />
       <div className="relative z-10 h-[100svh] flex flex-col items-center justify-center text-center text-white px-6">
-        <p className="text-xs uppercase tracking-[0.3em] text-primary mb-4">Tesla</p>
-        <h1 className="text-5xl md:text-7xl font-semibold tracking-tight leading-[1.03]">
+        <p className="text-xs uppercase tracking-[0.3em] text-white/90 mb-4">Tesla</p>
+        <h1 className="text-5xl md:text-7xl font-semibold tracking-tight leading-[1.03] drop-shadow-lg">
           The Future, Accelerated
         </h1>
-        <p className="mt-5 max-w-xl text-sm md:text-base text-white/80">
+        <p className="mt-5 max-w-xl text-sm md:text-base text-white/85 drop-shadow">
           Electric vehicles, solar energy, and intelligent autonomy — engineered as one system.
         </p>
       </div>
