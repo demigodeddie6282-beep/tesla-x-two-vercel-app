@@ -16,26 +16,238 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "Tesla — Electric Cars, Solar & Clean Energy" },
-      { name: "description", content: "Tesla is accelerating the world's transition to sustainable energy with electric cars, solar and integrated renewable energy solutions." },
+      {
+        name: "description",
+        content:
+          "Tesla is accelerating the world's transition to sustainable energy with electric cars, solar and integrated renewable energy solutions.",
+      },
     ],
   }),
   component: Index,
 });
 
+function IntroVideo() {
+  return (
+    <section className="relative min-h-[100svh] w-full overflow-hidden bg-black">
+      <iframe
+        title="Tesla intro"
+        className="absolute inset-0 w-full h-full"
+        src="https://www.youtube.com/embed/IpzU7nl5jE4?autoplay=1&mute=1&loop=1&playlist=IpzU7nl5jE4&controls=0&modestbranding=1&playsinline=1&rel=0"
+        allow="autoplay; encrypted-media; picture-in-picture"
+        allowFullScreen
+      />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/70 pointer-events-none" />
+      <div className="relative z-10 h-[100svh] flex flex-col items-center justify-center text-center text-white px-6">
+        <p className="text-xs uppercase tracking-[0.3em] text-primary mb-4">Tesla</p>
+        <h1 className="text-5xl md:text-7xl font-semibold tracking-tight leading-[1.03]">
+          The Future, Accelerated
+        </h1>
+        <p className="mt-5 max-w-xl text-sm md:text-base text-white/80">
+          Electric vehicles, solar energy, and intelligent autonomy — engineered as one system.
+        </p>
+      </div>
+    </section>
+  );
+}
+
 function Index() {
   return (
     <div className="w-full">
-      <HeroPanel image={modelY} eyebrow="New" title="Model Y" subtitle="The best-selling car in the world." primaryLabel="Order Now" primaryTo="/vehicles" secondaryLabel="Learn More" secondaryTo="/vehicles" />
-      <HeroPanel image={model3} title="Model 3" subtitle="Lease starting at $349/mo." primaryLabel="Order Now" primaryTo="/vehicles" secondaryLabel="Demo Drive" secondaryTo="/vehicles" />
-      <HeroPanel image={modelS} title="Model S" subtitle="Plaid — 0–60 mph in 1.99 s." primaryLabel="Order Now" primaryTo="/vehicles" secondaryLabel="Learn More" secondaryTo="/vehicles" />
-      <HeroPanel image={modelX} title="Model X" subtitle="Falcon Wing doors. Tri-Motor performance." primaryLabel="Order Now" primaryTo="/vehicles" secondaryLabel="Learn More" secondaryTo="/vehicles" textColor="light" />
-      <HeroPanel image={cybertruck} title="Cybertruck" subtitle="Built for any planet." primaryLabel="Order Now" primaryTo="/vehicles" secondaryLabel="Learn More" secondaryTo="/vehicles" textColor="light" />
-      <HeroPanel image={semi} title="Tesla Semi" subtitle="Class 8 freight. 500-mile range." primaryLabel="Reserve" primaryTo="/vehicles" secondaryLabel="Specs" secondaryTo="/vehicles" />
-      <HeroPanel image={roadster} eyebrow="Coming Soon" title="Roadster" subtitle="The quickest car in the world." primaryLabel="Reserve" primaryTo="/vehicles" secondaryLabel="Learn More" secondaryTo="/vehicles" textColor="light" />
-      <HeroPanel image={powerwall} title="Powerwall" subtitle="Power your home around the clock." primaryLabel="Order Now" primaryTo="/energy" secondaryLabel="Learn More" secondaryTo="/energy" />
-      <HeroPanel image={solarRoof} title="Solar Roof" subtitle="Produce clean energy from your roof." primaryLabel="Order Now" primaryTo="/energy" secondaryLabel="Learn More" secondaryTo="/energy" />
-      <HeroPanel image={megapack} title="Megapack" subtitle="Massive energy storage for utilities." primaryLabel="Learn More" primaryTo="/energy" textColor="light" />
-      <HeroPanel image={charging} title="Supercharging" subtitle="Charge in minutes, not hours." primaryLabel="Find a Supercharger" primaryTo="/charging" secondaryLabel="Home Charging" secondaryTo="/charging" textColor="light" />
+      <IntroVideo />
+
+      <HeroPanel
+        image={modelY}
+        eyebrow="New"
+        title="Model Y"
+        subtitle="The best-selling car in the world."
+        primaryLabel="Order Now"
+        primaryTo="/vehicles"
+        secondaryLabel="Demo Drive"
+        secondaryTo="/vehicles"
+        textColor="light"
+        imagePosition="center 55%"
+        specs={[
+          { label: "Range", value: "320 mi" },
+          { label: "0–60 mph", value: "4.8 s" },
+          { label: "Top Speed", value: "135 mph" },
+          { label: "From", value: "$44,990" },
+        ]}
+      />
+
+      <HeroPanel
+        image={model3}
+        title="Model 3"
+        subtitle="Pure performance. Lease from $349/mo."
+        primaryLabel="Order Now"
+        primaryTo="/vehicles"
+        secondaryLabel="Demo Drive"
+        secondaryTo="/vehicles"
+        textColor="light"
+        imagePosition="center 55%"
+        specs={[
+          { label: "Range", value: "341 mi" },
+          { label: "0–60 mph", value: "2.9 s" },
+          { label: "Top Speed", value: "162 mph" },
+          { label: "From", value: "$42,490" },
+        ]}
+      />
+
+      <HeroPanel
+        image={modelS}
+        title="Model S"
+        subtitle="Plaid. The quickest production sedan ever."
+        primaryLabel="Order Now"
+        primaryTo="/vehicles"
+        secondaryLabel="Demo Drive"
+        secondaryTo="/vehicles"
+        textColor="light"
+        imagePosition="center 55%"
+        specs={[
+          { label: "Range", value: "396 mi" },
+          { label: "0–60 mph", value: "1.99 s" },
+          { label: "Top Speed", value: "200 mph" },
+          { label: "From", value: "$79,990" },
+        ]}
+      />
+
+      <HeroPanel
+        image={modelX}
+        title="Model X"
+        subtitle="Falcon Wing doors. Tri-Motor performance."
+        primaryLabel="Order Now"
+        primaryTo="/vehicles"
+        secondaryLabel="Demo Drive"
+        secondaryTo="/vehicles"
+        textColor="light"
+        imagePosition="center 55%"
+        specs={[
+          { label: "Range", value: "348 mi" },
+          { label: "0–60 mph", value: "2.5 s" },
+          { label: "Seating", value: "Up to 7" },
+          { label: "From", value: "$84,990" },
+        ]}
+      />
+
+      <HeroPanel
+        image={cybertruck}
+        title="Cybertruck"
+        subtitle="Built for any planet."
+        primaryLabel="Order Now"
+        primaryTo="/vehicles"
+        secondaryLabel="Demo Drive"
+        secondaryTo="/vehicles"
+        textColor="light"
+        imagePosition="center 55%"
+        specs={[
+          { label: "Range", value: "340 mi" },
+          { label: "0–60 mph", value: "2.6 s" },
+          { label: "Towing", value: "11,000 lb" },
+          { label: "From", value: "$79,990" },
+        ]}
+      />
+
+      <HeroPanel
+        image={semi}
+        title="Tesla Semi"
+        subtitle="Class 8 freight. All-electric."
+        primaryLabel="Reserve"
+        primaryTo="/vehicles"
+        secondaryLabel="Specs"
+        secondaryTo="/vehicles"
+        textColor="light"
+        imagePosition="center 50%"
+        specs={[
+          { label: "Range", value: "500 mi" },
+          { label: "Charging", value: "70% in 30m" },
+          { label: "Energy", value: "<2 kWh/mi" },
+          { label: "From", value: "$180,000" },
+        ]}
+      />
+
+      <HeroPanel
+        image={roadster}
+        eyebrow="Coming Soon"
+        title="Roadster"
+        subtitle="The quickest car in the world."
+        primaryLabel="Reserve"
+        primaryTo="/vehicles"
+        secondaryLabel="Specs"
+        secondaryTo="/vehicles"
+        textColor="light"
+        imagePosition="center 55%"
+        specs={[
+          { label: "0–60 mph", value: "1.9 s" },
+          { label: "Top Speed", value: "250+ mph" },
+          { label: "Range", value: "620 mi" },
+          { label: "From", value: "$200,000" },
+        ]}
+      />
+
+      <HeroPanel
+        image={powerwall}
+        title="Powerwall"
+        subtitle="Power your home around the clock."
+        primaryLabel="Order Now"
+        primaryTo="/energy"
+        secondaryLabel="Learn More"
+        secondaryTo="/energy"
+        textColor="light"
+        imagePosition="center 50%"
+        specs={[
+          { label: "Capacity", value: "13.5 kWh" },
+          { label: "Power", value: "11.5 kW peak" },
+          { label: "Backup", value: "Whole-home" },
+        ]}
+      />
+
+      <HeroPanel
+        image={solarRoof}
+        title="Solar Roof"
+        subtitle="Produce clean energy from your roof."
+        primaryLabel="Order Now"
+        primaryTo="/energy"
+        secondaryLabel="Learn More"
+        secondaryTo="/energy"
+        textColor="light"
+        imagePosition="center 50%"
+        specs={[
+          { label: "Warranty", value: "25 years" },
+          { label: "Tiles", value: "Glass + steel" },
+          { label: "Integrates", value: "Powerwall" },
+        ]}
+      />
+
+      <HeroPanel
+        image={megapack}
+        title="Megapack"
+        subtitle="Utility-scale energy storage."
+        primaryLabel="Learn More"
+        primaryTo="/energy"
+        textColor="light"
+        imagePosition="center 50%"
+        specs={[
+          { label: "Capacity", value: "3.9 MWh" },
+          { label: "Power", value: "1.9 MW" },
+          { label: "Install", value: "Pre-assembled" },
+        ]}
+      />
+
+      <HeroPanel
+        image={charging}
+        title="Supercharging"
+        subtitle="Charge in minutes, not hours."
+        primaryLabel="Find a Supercharger"
+        primaryTo="/charging"
+        secondaryLabel="Home Charging"
+        secondaryTo="/charging"
+        textColor="light"
+        imagePosition="center 50%"
+        specs={[
+          { label: "Peak", value: "250 kW" },
+          { label: "Range/15m", value: "200 mi" },
+          { label: "Stalls", value: "60,000+" },
+        ]}
+      />
     </div>
   );
 }

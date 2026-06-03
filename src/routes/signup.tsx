@@ -8,8 +8,8 @@ import { useAuth } from "@/hooks/useAuth";
 export const Route = createFileRoute("/signup")({
   head: () => ({
     meta: [
-      { title: "Create account — Nexora" },
-      { name: "description", content: "Create your Nexora account to invest, buy and track everything in one place." },
+      { title: "Create account — Tesla" },
+      { name: "description", content: "Create your Tesla account to invest, buy and track everything in one place." },
     ],
   }),
   component: SignupPage,
@@ -64,7 +64,7 @@ function SignupPage() {
   return (
     <div className="pt-20 min-h-screen bg-background flex items-center justify-center px-6 py-12">
       <div className="w-full max-w-md rounded-3xl border border-border p-8 md:p-10">
-        <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-2">Join Nexora</p>
+        <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-2">Join Tesla</p>
         <h1 className="text-3xl font-semibold tracking-tight mb-2">Create your account</h1>
         <p className="text-sm text-muted-foreground mb-8">Track every order, investment and asset in one place.</p>
 

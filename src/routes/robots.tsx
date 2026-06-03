@@ -30,7 +30,7 @@ function RobotsPage() {
         <div className="relative z-10 max-w-7xl mx-auto w-full px-6 md:px-10">
           <p className="text-xs uppercase tracking-[0.2em] mb-3 text-foreground/60">Neural Robotics</p>
           <h1 className="text-5xl md:text-7xl font-semibold tracking-tight text-foreground">Humanoid systems, deployed.</h1>
-          <p className="mt-4 max-w-xl text-foreground/70">Pre-trained on 500+ task domains. Continuously updated through the Nexora intelligence mesh.</p>
+          <p className="mt-4 max-w-xl text-foreground/70">Pre-trained on 500+ task domains. Continuously updated through the Tesla intelligence mesh.</p>
         </div>
       </section>
 

@@ -8,8 +8,8 @@ import { useAuth } from "@/hooks/useAuth";
 export const Route = createFileRoute("/login")({
   head: () => ({
     meta: [
-      { title: "Sign in — Nexora" },
-      { name: "description", content: "Sign in to manage your Nexora purchases, investments and orders." },
+      { title: "Sign in — Tesla" },
+      { name: "description", content: "Sign in to manage your Tesla purchases, investments and orders." },
     ],
   }),
   component: LoginPage,
@@ -57,7 +57,7 @@ function LoginPage() {
     <div className="pt-20 min-h-screen bg-background flex items-center justify-center px-6">
       <div className="w-full max-w-md rounded-3xl border border-border p-8 md:p-10">
         <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-2">Welcome back</p>
-        <h1 className="text-3xl font-semibold tracking-tight mb-2">Sign in to Nexora</h1>
+        <h1 className="text-3xl font-semibold tracking-tight mb-2">Sign in to Tesla</h1>
         <p className="text-sm text-muted-foreground mb-8">Access your purchases, investments and orders.</p>
 
         <button onClick={google} className="w-full px-6 py-3 rounded-full border border-border text-sm font-medium hover:bg-accent mb-4">
