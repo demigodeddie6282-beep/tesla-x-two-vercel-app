@@ -17,10 +17,14 @@ export function SiteNav() {
   const { session, signOut } = useAuth();
 
   return (
-    <header className="fixed top-0 inset-x-0 z-50">
+    <header className="fixed top-0 inset-x-0 z-50 bg-background/85 backdrop-blur-md border-b border-border/60">
       <nav className="flex items-center justify-between px-6 md:px-10 h-16 text-foreground">
-        <Link to="/" className="text-[22px] font-extrabold tracking-tight text-primary">
-          TESLA
+        <Link
+          to="/"
+          className="text-[22px] font-extrabold tracking-[0.18em] text-foreground"
+          style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
+        >
+          T<span className="text-primary">E</span>SLA
         </Link>
 
         <div className="hidden md:flex items-center gap-2">
