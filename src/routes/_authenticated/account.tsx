@@ -6,8 +6,8 @@ import { useAuth } from "@/hooks/useAuth";
 export const Route = createFileRoute("/_authenticated/account")({
   head: () => ({
     meta: [
-      { title: "My Account — Nexora" },
-      { name: "description", content: "Manage your Nexora purchases, investments and orders." },
+      { title: "My Account — Tesla" },
+      { name: "description", content: "Manage your Tesla purchases, investments and orders." },
     ],
   }),
   component: AccountPage,

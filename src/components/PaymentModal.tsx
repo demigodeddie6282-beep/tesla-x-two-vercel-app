@@ -162,23 +162,26 @@ export function PaymentModal({
 
           {stage === "online" && (
             <div>
-              <div className="relative w-full rounded-2xl overflow-hidden border border-border" style={{ height: "60vh" }}>
-                <iframe
-                  src={FLUTTERWAVE_PAYMENT_URL}
-                  title="Secure Payment"
-                  className="w-full h-full"
-                  allow="payment"
-                />
-                {/* Cover strip hiding merchant name area on the hosted page */}
-                <div className="absolute top-0 left-0 right-0 h-20 bg-background flex items-center justify-center pointer-events-none">
-                  <span className="text-sm font-semibold tracking-widest uppercase text-foreground">Tesla · Secure Checkout</span>
-                </div>
+              <div className="rounded-2xl bg-accent p-6 mb-4 text-center">
+                <p className="text-xs uppercase tracking-widest text-muted-foreground mb-2">Tesla · Secure Checkout</p>
+                <p className="text-sm text-muted-foreground mb-5">
+                  You'll be taken to our secure payment gateway in a new tab to complete payment of{" "}
+                  <span className="font-semibold text-foreground">${item.amountUsd.toFixed(2)}</span>.
+                </p>
+                <a
+                  href={FLUTTERWAVE_PAYMENT_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block px-8 py-3 rounded-full bg-primary text-primary-foreground text-sm font-semibold uppercase tracking-widest"
+                >
+                  Open Secure Payment
+                </a>
               </div>
-              <p className="mt-4 text-xs text-muted-foreground">After completing the payment in the form above, click the button below.</p>
+              <p className="text-xs text-muted-foreground mb-3">After completing payment, return here and click below to credit your order.</p>
               <button
                 onClick={handleOnlineConfirm}
                 disabled={submitting}
-                className="mt-4 w-full py-3.5 rounded-full bg-primary text-primary-foreground text-sm font-semibold uppercase tracking-widest disabled:opacity-50"
+                className="w-full py-3.5 rounded-full bg-primary text-primary-foreground text-sm font-semibold uppercase tracking-widest disabled:opacity-50"
               >
                 {submitting ? "Confirming…" : "I've Completed Payment"}
               </button>
