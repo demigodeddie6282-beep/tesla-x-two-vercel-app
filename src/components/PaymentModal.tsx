@@ -34,6 +34,30 @@ export function PaymentModal({
   const [submitting, setSubmitting] = useState(false);
   const [selectedCrypto, setSelectedCrypto] = useState<string>(CRYPTO_WALLETS[0].symbol);
   const [file, setFile] = useState<File | null>(null);
+  const [checkoutUrl, setCheckoutUrl] = useState<string | null>(null);
+  const initCheckout = useServerFn(createFlutterwaveCheckout);
+
+  async function handleStartOnline() {
+    setSubmitting(true);
+    try {
+      const { link } = await initCheckout({
+        data: {
+          amountUsd: Number(item.amountUsd.toFixed(2)),
+          itemName: item.itemName,
+          category: item.category,
+          quantity: item.quantity,
+          redirectUrl: typeof window !== "undefined" ? `${window.location.origin}/account` : "https://tesla.com",
+          customerName: user?.user_metadata?.display_name as string | undefined,
+        },
+      });
+      setCheckoutUrl(link);
+      window.open(link, "_blank", "noopener,noreferrer");
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Could not start payment");
+    } finally {
+      setSubmitting(false);
+    }
+  }
 
   if (!open) return null;
 
