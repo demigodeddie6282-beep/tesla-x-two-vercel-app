@@ -76,7 +76,7 @@ export function SiteNav() {
       {open && (
         <div className="md:hidden bg-background/95 backdrop-blur-md border-t border-border">
           <div className="flex flex-col p-4 gap-1">
-            {[...links, { to: "/admin", label: "Admin" }].map((l) => (
+            {links.map((l) => (
               <Link
                 key={l.to}
                 to={l.to}
