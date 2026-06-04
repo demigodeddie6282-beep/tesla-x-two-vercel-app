@@ -31,14 +31,23 @@ function IntroVideo() {
     <section className="relative min-h-[100svh] w-full overflow-hidden bg-black">
       <video
         className="absolute inset-0 w-full h-full object-cover"
-        src="https://videos.pexels.com/video-files/2099568/2099568-uhd_2560_1440_30fps.mp4"
         poster={modelS}
         autoPlay
         muted
         loop
         playsInline
         preload="auto"
-      />
+        crossOrigin="anonymous"
+      >
+        <source
+          src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"
+          type="video/mp4"
+        />
+        <source
+          src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4"
+          type="video/mp4"
+        />
+      </video>
       <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/80 pointer-events-none" />
       <div className="relative z-10 h-[100svh] flex flex-col items-center justify-center text-center text-white px-6">
         <p className="text-xs uppercase tracking-[0.3em] text-white/90 mb-4">Tesla</p>
