@@ -121,12 +121,23 @@ export function PaymentModal({
     <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
       <div className="bg-background text-foreground rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl">
         <div className="p-6 md:p-8 border-b border-border flex items-start justify-between gap-4">
-          <div>
-            <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">{item.category}</p>
-            <h2 className="text-xl md:text-2xl font-semibold tracking-tight">{item.itemName}</h2>
-            <p className="text-sm text-muted-foreground mt-1">
-              Qty {item.quantity.toLocaleString()} · Total <span className="font-semibold text-foreground">${item.amountUsd.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
-            </p>
+          <div className="flex items-start gap-3">
+            {stage !== "choose" && stage !== "success" && (
+              <button
+                onClick={() => setStage("choose")}
+                className="mt-1 text-xs uppercase tracking-widest text-muted-foreground hover:text-foreground border border-border rounded-full px-3 py-1"
+                aria-label="Back to payment methods"
+              >
+                ← Back
+              </button>
+            )}
+            <div>
+              <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">{item.category}</p>
+              <h2 className="text-xl md:text-2xl font-semibold tracking-tight">{item.itemName}</h2>
+              <p className="text-sm text-muted-foreground mt-1">
+                Qty {item.quantity.toLocaleString()} · Total <span className="font-semibold text-foreground">${item.amountUsd.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+              </p>
+            </div>
           </div>
           <button onClick={onClose} className="text-muted-foreground hover:text-foreground text-2xl leading-none">×</button>
         </div>
