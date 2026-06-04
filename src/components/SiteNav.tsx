@@ -40,9 +40,6 @@ export function SiteNav() {
         </div>
 
         <div className="hidden md:flex items-center gap-1">
-          <Link to="/admin" className="px-3 py-2 text-sm font-medium rounded-md hover:bg-foreground/5">
-            Admin
-          </Link>
           <button className="p-2 rounded-md hover:bg-foreground/5" aria-label="Region">
             <Globe className="w-5 h-5" />
           </button>
