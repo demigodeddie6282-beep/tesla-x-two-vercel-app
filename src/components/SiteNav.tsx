@@ -40,9 +40,6 @@ export function SiteNav() {
         </div>
 
         <div className="hidden md:flex items-center gap-1">
-          <Link to="/admin" className="px-3 py-2 text-sm font-medium rounded-md hover:bg-foreground/5">
-            Admin
-          </Link>
           <button className="p-2 rounded-md hover:bg-foreground/5" aria-label="Region">
             <Globe className="w-5 h-5" />
           </button>
@@ -79,7 +76,7 @@ export function SiteNav() {
       {open && (
         <div className="md:hidden bg-background/95 backdrop-blur-md border-t border-border">
           <div className="flex flex-col p-4 gap-1">
-            {[...links, { to: "/admin", label: "Admin" }].map((l) => (
+            {links.map((l) => (
               <Link
                 key={l.to}
                 to={l.to}
