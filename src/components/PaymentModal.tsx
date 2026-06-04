@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { toast } from "sonner";
+import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
-import { FLUTTERWAVE_PAYMENT_URL, CRYPTO_WALLETS, BANK_DETAILS } from "@/lib/payments";
+import { CRYPTO_WALLETS, BANK_DETAILS } from "@/lib/payments";
+import { createFlutterwaveCheckout } from "@/lib/payments.functions";
 
 export interface PaymentItem {
   category: "crypto" | "ipo" | "vehicle" | "robot";
