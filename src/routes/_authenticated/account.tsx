@@ -36,6 +36,10 @@ function AccountPage() {
   const { data: txs = [] } = useQuery({
     queryKey: ["transactions", user?.id],
     enabled: !!user,
+    staleTime: 0,
+    refetchOnWindowFocus: true,
+    refetchOnMount: "always",
+    refetchInterval: 10_000,
     queryFn: async () => {
       const { data, error } = await supabase
         .from("transactions")
