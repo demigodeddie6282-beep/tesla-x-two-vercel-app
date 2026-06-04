@@ -37,14 +37,13 @@ function IntroVideo() {
         loop
         playsInline
         preload="auto"
-        crossOrigin="anonymous"
       >
         <source
-          src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"
+          src="https://cdn.coverr.co/videos/coverr-driving-through-the-city-at-night-7649/1080p.mp4"
           type="video/mp4"
         />
         <source
-          src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4"
+          src="https://cdn.coverr.co/videos/coverr-electric-car-charging-9466/1080p.mp4"
           type="video/mp4"
         />
       </video>
