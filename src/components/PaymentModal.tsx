@@ -202,17 +202,26 @@ export function PaymentModal({
               <div className="rounded-2xl bg-accent p-6 mb-4 text-center">
                 <p className="text-xs uppercase tracking-widest text-muted-foreground mb-2">Tesla · Secure Checkout</p>
                 <p className="text-sm text-muted-foreground mb-5">
-                  You'll be taken to our secure payment gateway in a new tab to complete payment of{" "}
-                  <span className="font-semibold text-foreground">${item.amountUsd.toFixed(2)}</span>.
+                  Click below to open Tesla's secure card payment page (USD <span className="font-semibold text-foreground">${item.amountUsd.toFixed(2)}</span>). Your name and email will be pre-filled.
                 </p>
-                <a
-                  href={FLUTTERWAVE_PAYMENT_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block px-8 py-3 rounded-full bg-primary text-primary-foreground text-sm font-semibold uppercase tracking-widest"
-                >
-                  Open Secure Payment
-                </a>
+                {!checkoutUrl ? (
+                  <button
+                    onClick={handleStartOnline}
+                    disabled={submitting}
+                    className="inline-block px-8 py-3 rounded-full bg-primary text-primary-foreground text-sm font-semibold uppercase tracking-widest disabled:opacity-50"
+                  >
+                    {submitting ? "Preparing…" : "Open Secure Payment"}
+                  </button>
+                ) : (
+                  <a
+                    href={checkoutUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block px-8 py-3 rounded-full bg-primary text-primary-foreground text-sm font-semibold uppercase tracking-widest"
+                  >
+                    Reopen Payment Page
+                  </a>
+                )}
               </div>
               <p className="text-xs text-muted-foreground mb-3">After completing payment, return here and click below to credit your order.</p>
               <button
