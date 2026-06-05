@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { adminListTransactions, adminUpdateTransactionStatus } from "@/lib/admin.functions";
+import { adminListConversations, adminListMessages, adminSendMessage } from "@/lib/chat.functions";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/admin")({
@@ -134,6 +135,8 @@ function AdminPage({ onLogout }: { onLogout: () => void }) {
     return true;
   });
 
+  const [tab, setTab] = useState<"orders" | "chats">("orders");
+
   return (
     <div className="pt-20 min-h-screen bg-background">
       <div className="max-w-7xl mx-auto px-6 md:px-10 py-12">
@@ -141,12 +144,29 @@ function AdminPage({ onLogout }: { onLogout: () => void }) {
           <div>
             <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-2">Console</p>
             <h1 className="text-4xl md:text-5xl font-semibold tracking-tight">Operator Dashboard</h1>
-            <p className="text-sm text-muted-foreground mt-2">Review payments, download payment slips, approve bank transfers.</p>
+            <p className="text-sm text-muted-foreground mt-2">Review payments, payment slips, and live client chats.</p>
           </div>
           <button onClick={onLogout} className="shrink-0 px-4 py-2 rounded-full border border-border text-xs font-medium uppercase tracking-widest hover:bg-accent">
             Sign out
           </button>
         </header>
+
+        <div className="flex gap-2 mb-6">
+          {(["orders", "chats"] as const).map((t) => (
+            <button
+              key={t}
+              onClick={() => setTab(t)}
+              className={`px-5 py-2 rounded-full text-xs font-semibold uppercase tracking-widest ${tab === t ? "bg-primary text-primary-foreground" : "bg-accent text-foreground hover:bg-accent/70"}`}
+            >
+              {t}
+            </button>
+          ))}
+        </div>
+
+        {tab === "chats" ? <AdminChats /> : null}
+        {tab === "orders" ? (
+        <>
+
 
         <div className="flex flex-wrap gap-2 mb-6">
           {FILTERS.map((f) => (
@@ -216,7 +236,117 @@ function AdminPage({ onLogout }: { onLogout: () => void }) {
             })}
           </div>
         )}
+        </>
+        ) : null}
       </div>
     </div>
   );
 }
+
+function AdminChats() {
+  const listConv = useServerFn(adminListConversations);
+  const listMsgs = useServerFn(adminListMessages);
+  const sendMsg = useServerFn(adminSendMessage);
+  const [convs, setConvs] = useState<Array<{ user_id: string; last: string; sender: string; created_at: string; unread: number }>>([]);
+  const [activeUser, setActiveUser] = useState<string | null>(null);
+  const [messages, setMessages] = useState<Array<{ id: string; sender: string; body: string; created_at: string }>>([]);
+  const [body, setBody] = useState("");
+  const endRef = useRef<HTMLDivElement>(null);
+
+  async function refreshConvs() {
+    try {
+      const r = await listConv({ data: { id: ADMIN_ID, pw: ADMIN_PW } });
+      setConvs(r.conversations);
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Failed");
+    }
+  }
+  async function refreshMsgs(uid: string) {
+    try {
+      const r = await listMsgs({ data: { id: ADMIN_ID, pw: ADMIN_PW, user_id: uid } });
+      setMessages(r.messages as typeof messages);
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Failed");
+    }
+  }
+
+  useEffect(() => {
+    refreshConvs();
+    const t = setInterval(refreshConvs, 5000);
+    return () => clearInterval(t);
+  }, []);
+
+  useEffect(() => {
+    if (!activeUser) return;
+    refreshMsgs(activeUser);
+    const t = setInterval(() => refreshMsgs(activeUser), 3000);
+    return () => clearInterval(t);
+  }, [activeUser]);
+
+  useEffect(() => { endRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages.length]);
+
+  async function send(e: React.FormEvent) {
+    e.preventDefault();
+    if (!activeUser || !body.trim()) return;
+    const text = body.trim();
+    setBody("");
+    try {
+      await sendMsg({ data: { id: ADMIN_ID, pw: ADMIN_PW, user_id: activeUser, body: text } });
+      refreshMsgs(activeUser);
+      refreshConvs();
+    } catch (err) {
+      setBody(text);
+      toast.error(err instanceof Error ? err.message : "Failed");
+    }
+  }
+
+  return (
+    <div className="grid md:grid-cols-3 gap-4 h-[70vh]">
+      <div className="md:col-span-1 rounded-2xl border border-border overflow-y-auto">
+        {convs.length === 0 ? (
+          <p className="text-sm text-muted-foreground p-4">No conversations yet.</p>
+        ) : convs.map((c) => (
+          <button
+            key={c.user_id}
+            onClick={() => setActiveUser(c.user_id)}
+            className={`w-full text-left p-4 border-b border-border hover:bg-accent ${activeUser === c.user_id ? "bg-accent" : ""}`}
+          >
+            <div className="flex items-center justify-between gap-2 mb-1">
+              <span className="text-[10px] font-mono text-muted-foreground truncate">{c.user_id.slice(0, 8)}…</span>
+              {c.unread > 0 && <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary text-primary-foreground">{c.unread}</span>}
+            </div>
+            <p className="text-sm truncate"><span className="text-muted-foreground">{c.sender === "user" ? "" : "you: "}</span>{c.last}</p>
+            <p className="text-[10px] text-muted-foreground mt-1">{new Date(c.created_at).toLocaleString()}</p>
+          </button>
+        ))}
+      </div>
+      <div className="md:col-span-2 rounded-2xl border border-border flex flex-col">
+        {!activeUser ? (
+          <p className="text-sm text-muted-foreground p-6 m-auto">Pick a conversation to view messages.</p>
+        ) : (
+          <>
+            <div className="flex-1 overflow-y-auto p-4 space-y-3">
+              {messages.map((m) => (
+                <div key={m.id} className={`flex ${m.sender === "admin" ? "justify-end" : "justify-start"}`}>
+                  <div className={`max-w-[80%] px-4 py-2 rounded-2xl text-sm ${m.sender === "admin" ? "bg-primary text-primary-foreground" : "bg-accent text-foreground"}`}>
+                    <p className="whitespace-pre-wrap break-words">{m.body}</p>
+                    <p className="text-[10px] mt-1 opacity-70">{new Date(m.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</p>
+                  </div>
+                </div>
+              ))}
+              <div ref={endRef} />
+            </div>
+            <form onSubmit={send} className="border-t border-border p-3 flex gap-2">
+              <input value={body} onChange={(e) => setBody(e.target.value)} placeholder="Reply…"
+                className="flex-1 px-4 py-3 rounded-full bg-accent text-foreground border border-border focus:outline-none focus:ring-2 focus:ring-primary text-sm" />
+              <button type="submit" disabled={!body.trim()} className="px-5 py-3 rounded-full bg-primary text-primary-foreground text-xs font-semibold uppercase tracking-widest disabled:opacity-50">
+                Send
+              </button>
+            </form>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+

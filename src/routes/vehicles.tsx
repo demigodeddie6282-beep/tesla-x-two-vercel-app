@@ -110,7 +110,7 @@ function VehiclesPage() {
             <h3 className="text-2xl md:text-3xl font-semibold tracking-tight">Bulk acquisitions for institutional partners.</h3>
             <p className="text-sm text-muted-foreground mt-2 max-w-xl">Tiered fleet pricing, dedicated concierge, priority delivery worldwide.</p>
           </div>
-          <Link to="/ipo" className="btn-hero btn-hero-primary">Talk to a strategist</Link>
+          <Link to="/chat" className="btn-hero btn-hero-primary">Talk to a strategist</Link>
         </div>
       </section>
     </div>
