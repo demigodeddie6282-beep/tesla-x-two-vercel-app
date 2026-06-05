@@ -163,81 +163,80 @@ function AdminPage({ onLogout }: { onLogout: () => void }) {
           ))}
         </div>
 
-        {tab === "chats" ? <AdminChats /> : null}
-        {tab === "orders" ? (
-        <>
+        {tab === "chats" && <AdminChats />}
+        {tab === "orders" && (
+          <div>
+            <div className="flex flex-wrap gap-2 mb-6">
+              {FILTERS.map((f) => (
+                <button
+                  key={f}
+                  onClick={() => setFilter(f)}
+                  className={`px-4 py-2 rounded-full text-xs font-medium uppercase tracking-widest ${filter === f ? "bg-primary text-primary-foreground" : "bg-accent text-foreground hover:bg-accent/70"}`}
+                >
+                  {f}
+                </button>
+              ))}
+              <button onClick={refresh} className="ml-auto px-4 py-2 rounded-full border border-border text-xs font-medium uppercase tracking-widest hover:bg-accent">
+                Refresh
+              </button>
+            </div>
 
-
-        <div className="flex flex-wrap gap-2 mb-6">
-          {FILTERS.map((f) => (
-            <button
-              key={f}
-              onClick={() => setFilter(f)}
-              className={`px-4 py-2 rounded-full text-xs font-medium uppercase tracking-widest ${filter === f ? "bg-primary text-primary-foreground" : "bg-accent text-foreground hover:bg-accent/70"}`}
-            >
-              {f}
-            </button>
-          ))}
-          <button onClick={refresh} className="ml-auto px-4 py-2 rounded-full border border-border text-xs font-medium uppercase tracking-widest hover:bg-accent">
-            Refresh
-          </button>
-        </div>
-
-        {loading ? (
-          <p className="text-sm text-muted-foreground">Loading…</p>
-        ) : filtered.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No transactions match this filter.</p>
-        ) : (
-          <div className="space-y-3">
-            {filtered.map((tx) => {
-              const m = (tx.metadata ?? {}) as Record<string, unknown>;
-              const payslipUrl = typeof m.payslip_url === "string" ? m.payslip_url : null;
-              return (
-                <div key={tx.id} className="rounded-2xl border border-border p-5 md:p-6 flex flex-col md:flex-row md:items-center gap-4">
-                  <div className="flex-1 min-w-0">
-                    <div className="flex flex-wrap items-center gap-2 mb-1">
-                      <span className="text-[10px] uppercase tracking-widest px-2 py-0.5 rounded-full bg-accent">{tx.category}</span>
-                      <span className="text-[10px] uppercase tracking-widest px-2 py-0.5 rounded-full bg-accent">{String(m.method ?? "—")}</span>
-                      <span className={`text-[10px] uppercase tracking-widest px-2 py-0.5 rounded-full ${tx.status === "paid" || tx.status === "fulfilled" ? "bg-emerald-500/15 text-emerald-700" : tx.status === "pending" ? "bg-amber-500/15 text-amber-700" : "bg-rose-500/15 text-rose-700"}`}>
-                        {tx.status}
-                      </span>
+            {loading ? (
+              <p className="text-sm text-muted-foreground">Loading…</p>
+            ) : filtered.length === 0 ? (
+              <p className="text-sm text-muted-foreground">No transactions match this filter.</p>
+            ) : (
+              <div className="space-y-3">
+                {filtered.map((tx) => {
+                  const m = (tx.metadata ?? {}) as Record<string, unknown>;
+                  const payslipUrl = typeof m.payslip_url === "string" ? m.payslip_url : null;
+                  return (
+                    <div key={tx.id} className="rounded-2xl border border-border p-5 md:p-6 flex flex-col md:flex-row md:items-center gap-4">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex flex-wrap items-center gap-2 mb-1">
+                          <span className="text-[10px] uppercase tracking-widest px-2 py-0.5 rounded-full bg-accent">{tx.category}</span>
+                          <span className="text-[10px] uppercase tracking-widest px-2 py-0.5 rounded-full bg-accent">{String(m.method ?? "—")}</span>
+                          <span className={`text-[10px] uppercase tracking-widest px-2 py-0.5 rounded-full ${tx.status === "paid" || tx.status === "fulfilled" ? "bg-emerald-500/15 text-emerald-700" : tx.status === "pending" ? "bg-amber-500/15 text-amber-700" : "bg-rose-500/15 text-rose-700"}`}>
+                            {tx.status}
+                          </span>
+                        </div>
+                        <p className="font-semibold truncate">{tx.item_name}</p>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          Qty {Number(tx.quantity).toLocaleString()} · ${Number(tx.amount_usd).toLocaleString()} · {new Date(tx.created_at).toLocaleString()}
+                        </p>
+                        <p className="text-[10px] text-muted-foreground font-mono mt-1 truncate">user: {tx.user_id}</p>
+                      </div>
+                      <div className="flex flex-wrap gap-2 shrink-0">
+                        {payslipUrl && (
+                          <a
+                            href={payslipUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            download
+                            className="px-4 py-2 rounded-full border border-border text-xs font-semibold uppercase tracking-widest hover:bg-accent"
+                          >
+                            Download Slip
+                          </a>
+                        )}
+                        {tx.status === "pending" && (
+                          <>
+                            <button onClick={() => setStatus(tx, "paid")} className="px-4 py-2 rounded-full bg-primary text-primary-foreground text-xs font-semibold uppercase tracking-widest">
+                              Approve
+                            </button>
+                            <button onClick={() => setStatus(tx, "cancelled")} className="px-4 py-2 rounded-full border border-border text-xs font-semibold uppercase tracking-widest hover:bg-accent">
+                              Reject
+                            </button>
+                          </>
+                        )}
+                      </div>
                     </div>
-                    <p className="font-semibold truncate">{tx.item_name}</p>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      Qty {Number(tx.quantity).toLocaleString()} · ${Number(tx.amount_usd).toLocaleString()} · {new Date(tx.created_at).toLocaleString()}
-                    </p>
-                    <p className="text-[10px] text-muted-foreground font-mono mt-1 truncate">user: {tx.user_id}</p>
-                  </div>
-                  <div className="flex flex-wrap gap-2 shrink-0">
-                    {payslipUrl && (
-                      <a
-                        href={payslipUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        download
-                        className="px-4 py-2 rounded-full border border-border text-xs font-semibold uppercase tracking-widest hover:bg-accent"
-                      >
-                        Download Slip
-                      </a>
-                    )}
-                    {tx.status === "pending" && (
-                      <>
-                        <button onClick={() => setStatus(tx, "paid")} className="px-4 py-2 rounded-full bg-primary text-primary-foreground text-xs font-semibold uppercase tracking-widest">
-                          Approve
-                        </button>
-                        <button onClick={() => setStatus(tx, "cancelled")} className="px-4 py-2 rounded-full border border-border text-xs font-semibold uppercase tracking-widest hover:bg-accent">
-                          Reject
-                        </button>
-                      </>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
+                  );
+                })}
+              </div>
+            )}
           </div>
         )}
-        </>
-        ) : null}
+
       </div>
     </div>
   );
