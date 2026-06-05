@@ -202,7 +202,7 @@ export function PaymentModal({
               <div className="rounded-2xl bg-accent p-6 mb-4 text-center">
                 <p className="text-xs uppercase tracking-widest text-muted-foreground mb-2">Tesla · Secure Checkout</p>
                 <p className="text-sm text-muted-foreground mb-5">
-                  Click below to open Tesla's secure card payment page (USD <span className="font-semibold text-foreground">${item.amountUsd.toFixed(2)}</span>). Your name and email will be pre-filled.
+                  Click below to open Tesla's secure card payment page (USD <span className="font-semibold text-foreground">${item.amountUsd.toFixed(2)}</span>).
                 </p>
                 {!checkoutUrl ? (
                   <button
