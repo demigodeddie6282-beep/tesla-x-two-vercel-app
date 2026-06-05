@@ -78,7 +78,7 @@ function LoginPage() {
 
         <form onSubmit={submit}>
           <label className="block text-xs uppercase tracking-widest text-muted-foreground mb-2">Email</label>
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required
+          <input type="text" autoComplete="username" value={email} onChange={(e) => setEmail(e.target.value)} required
             className="w-full mb-5 px-4 py-3 rounded-full bg-accent text-foreground border border-border focus:outline-none focus:ring-2 focus:ring-primary" />
 
           <label className="block text-xs uppercase tracking-widest text-muted-foreground mb-2">Password</label>
