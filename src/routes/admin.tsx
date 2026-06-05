@@ -135,6 +135,8 @@ function AdminPage({ onLogout }: { onLogout: () => void }) {
     return true;
   });
 
+  const [tab, setTab] = useState<"orders" | "chats">("orders");
+
   return (
     <div className="pt-20 min-h-screen bg-background">
       <div className="max-w-7xl mx-auto px-6 md:px-10 py-12">
@@ -142,12 +144,29 @@ function AdminPage({ onLogout }: { onLogout: () => void }) {
           <div>
             <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-2">Console</p>
             <h1 className="text-4xl md:text-5xl font-semibold tracking-tight">Operator Dashboard</h1>
-            <p className="text-sm text-muted-foreground mt-2">Review payments, download payment slips, approve bank transfers.</p>
+            <p className="text-sm text-muted-foreground mt-2">Review payments, payment slips, and live client chats.</p>
           </div>
           <button onClick={onLogout} className="shrink-0 px-4 py-2 rounded-full border border-border text-xs font-medium uppercase tracking-widest hover:bg-accent">
             Sign out
           </button>
         </header>
+
+        <div className="flex gap-2 mb-6">
+          {(["orders", "chats"] as const).map((t) => (
+            <button
+              key={t}
+              onClick={() => setTab(t)}
+              className={`px-5 py-2 rounded-full text-xs font-semibold uppercase tracking-widest ${tab === t ? "bg-primary text-primary-foreground" : "bg-accent text-foreground hover:bg-accent/70"}`}
+            >
+              {t}
+            </button>
+          ))}
+        </div>
+
+        {tab === "chats" ? <AdminChats /> : null}
+        {tab === "orders" ? (
+        <>
+
 
         <div className="flex flex-wrap gap-2 mb-6">
           {FILTERS.map((f) => (
