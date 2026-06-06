@@ -8,7 +8,25 @@ export const Route = createFileRoute("/robots")({
     meta: [
       { title: "Robotics — Tesla" },
       { name: "description", content: "Humanoid AI robots for domestic, industrial, and enterprise deployment." },
+      { property: "og:title", content: "Robotics — Tesla" },
+      { property: "og:description", content: "Pre-trained humanoid robots for home, factory, security and culinary deployment." },
+      { property: "og:url", content: "/robots" },
+      { property: "og:type", content: "product" },
     ],
+    scripts: [{
+      type: "application/ld+json",
+      children: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        name: "Tesla Robotics",
+        itemListElement: [
+          { "@type": "Product", name: "Omnimax Gen-3", offers: { "@type": "Offer", price: "84200", priceCurrency: "USD" } },
+          { "@type": "Product", name: "Atlas-W", offers: { "@type": "Offer", price: "162000", priceCurrency: "USD" } },
+          { "@type": "Product", name: "Sentinel Mk II", offers: { "@type": "Offer", price: "220000", priceCurrency: "USD" } },
+          { "@type": "Product", name: "Kuro Domestic", offers: { "@type": "Offer", price: "48000", priceCurrency: "USD" } },
+        ],
+      }),
+    }],
   }),
   component: RobotsPage,
 });
@@ -39,7 +57,7 @@ function RobotsPage() {
           {units.map((u) => (
             <article key={u.id} className="rounded-3xl border border-border p-10 bg-background hover:shadow-xl transition-shadow">
               <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-2">{u.category}</p>
-              <h3 className="text-3xl font-semibold tracking-tight mb-6">{u.name}</h3>
+              <h2 className="text-3xl font-semibold tracking-tight mb-6">{u.name}</h2>
               <ul className="space-y-3 mb-8">
                 {u.specs.map((s) => (
                   <li key={s} className="flex items-center gap-3 text-sm">

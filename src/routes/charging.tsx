@@ -8,6 +8,9 @@ export const Route = createFileRoute("/charging")({
     meta: [
       { title: "Charging — Tesla" },
       { name: "description", content: "Tesla Supercharger network, Wall Connector for home, and commercial charging solutions." },
+      { property: "og:title", content: "Charging — Tesla" },
+      { property: "og:description", content: "60,000+ Superchargers worldwide, plus home and commercial charging hardware." },
+      { property: "og:url", content: "/charging" },
     ],
   }),
   component: ChargingPage,
@@ -40,7 +43,7 @@ function ChargingPage() {
           {items.map((i) => (
             <article key={i.id} className="rounded-3xl border border-border p-10 bg-background hover:shadow-xl transition-shadow">
               <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-2">{i.category}</p>
-              <h3 className="text-2xl font-semibold tracking-tight mb-1">{i.name}</h3>
+              <h2 className="text-2xl font-semibold tracking-tight mb-1">{i.name}</h2>
               <p className="text-sm text-muted-foreground mb-8">{i.tagline}</p>
               <div className="flex items-end justify-between pt-6 border-t border-border">
                 <div>

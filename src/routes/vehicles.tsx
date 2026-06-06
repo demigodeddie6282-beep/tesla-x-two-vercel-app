@@ -15,7 +15,28 @@ export const Route = createFileRoute("/vehicles")({
     meta: [
       { title: "Vehicles — Tesla" },
       { name: "description", content: "Order Tesla Model S, Model 3, Model Y, Model X, Cybertruck, Semi and Roadster. Bulk pricing for fleet acquisitions." },
+      { property: "og:title", content: "Vehicles — Tesla" },
+      { property: "og:description", content: "Order the full Tesla lineup — sedans, SUVs, trucks and hypercars. Fleet pricing available." },
+      { property: "og:url", content: "/vehicles" },
+      { property: "og:type", content: "product" },
     ],
+    scripts: [{
+      type: "application/ld+json",
+      children: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        name: "Tesla Vehicles",
+        itemListElement: [
+          { "@type": "Product", name: "Model S", offers: { "@type": "Offer", price: "79990", priceCurrency: "USD" } },
+          { "@type": "Product", name: "Model 3", offers: { "@type": "Offer", price: "42490", priceCurrency: "USD" } },
+          { "@type": "Product", name: "Model Y", offers: { "@type": "Offer", price: "44990", priceCurrency: "USD" } },
+          { "@type": "Product", name: "Model X", offers: { "@type": "Offer", price: "84990", priceCurrency: "USD" } },
+          { "@type": "Product", name: "Cybertruck", offers: { "@type": "Offer", price: "79990", priceCurrency: "USD" } },
+          { "@type": "Product", name: "Tesla Semi", offers: { "@type": "Offer", price: "180000", priceCurrency: "USD" } },
+          { "@type": "Product", name: "Roadster", offers: { "@type": "Offer", price: "200000", priceCurrency: "USD" } },
+        ],
+      }),
+    }],
   }),
   component: VehiclesPage,
 });
@@ -50,7 +71,7 @@ function VehicleCard({ v }: { v: typeof fleet[number] }) {
       <div className="p-8">
         <div className="flex justify-between items-start mb-6">
           <div>
-            <h3 className="text-2xl font-semibold tracking-tight">{v.name}</h3>
+            <h2 className="text-2xl font-semibold tracking-tight">{v.name}</h2>
             <p className="text-sm text-muted-foreground mt-1">{v.tagline}</p>
           </div>
           <div className="text-right">

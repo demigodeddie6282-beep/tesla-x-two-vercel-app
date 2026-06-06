@@ -66,9 +66,9 @@ export function HeroPanel({
         {eyebrow && (
           <p className={`text-xs font-medium uppercase tracking-[0.25em] mb-3 ${subtle}`}>{eyebrow}</p>
         )}
-        <h1 className="text-4xl md:text-6xl font-semibold tracking-tight leading-[1.05] drop-shadow-sm">
+        <h2 className="text-4xl md:text-6xl font-semibold tracking-tight leading-[1.05] drop-shadow-sm">
           {title}
-        </h1>
+        </h2>
         {subtitle && (
           <p className={`mt-4 text-sm md:text-base max-w-xl mx-auto ${subtle}`}>{subtitle}</p>
         )}
