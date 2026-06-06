@@ -9,6 +9,9 @@ export const Route = createFileRoute("/ipo")({
     meta: [
       { title: "Tesla Coins & IPO Stock — Buy Now" },
       { name: "description", content: "Buy Tesla-backed coins and pre-IPO stock. $500 minimum. Pay by card, crypto or bank transfer." },
+      { property: "og:title", content: "Tesla Coins & IPO Stock" },
+      { property: "og:description", content: "Pre-IPO open allocation — Tesla X, Robotics and Energy coins. $500 minimum." },
+      { property: "og:url", content: "/ipo" },
     ],
   }),
   component: IpoPage,
@@ -116,7 +119,7 @@ function CoinCard({ coin }: { coin: (typeof coins)[number] }) {
           </span>
           <span className="text-[10px] uppercase tracking-widest opacity-60">{coin.chain}</span>
         </div>
-        <h3 className="text-2xl font-semibold tracking-tight">{coin.name}</h3>
+        <h2 className="text-2xl font-semibold tracking-tight">{coin.name}</h2>
         <p className="mt-2 text-sm text-background/70">{coin.tagline}</p>
       </div>
 

@@ -9,6 +9,9 @@ export const Route = createFileRoute("/crypto")({
     meta: [
       { title: "Crypto Listings — Tesla" },
       { name: "description", content: "Buy newly launched tokens and AI-tech coins. Pay with USDT, BTC, ETH, card or bank transfer." },
+      { property: "og:title", content: "Crypto Listings — Tesla" },
+      { property: "og:description", content: "Early access to AI protocols, meme tokens and frontier digital assets." },
+      { property: "og:url", content: "/crypto" },
     ],
   }),
   component: CryptoPage,

@@ -21,6 +21,31 @@ export const Route = createFileRoute("/")({
         content:
           "Tesla is accelerating the world's transition to sustainable energy with electric cars, solar and integrated renewable energy solutions.",
       },
+      { property: "og:title", content: "Tesla — Electric Cars, Solar & Clean Energy" },
+      { property: "og:description", content: "Electric vehicles, solar energy, robotics and intelligent autonomy — engineered as one system." },
+      { property: "og:url", content: "/" },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          name: "Tesla",
+          url: "https://tesla-space-x-vercel-app.lovable.app",
+          logo: "https://tesla-space-x-vercel-app.lovable.app/favicon.ico",
+          sameAs: ["https://www.tesla.com"],
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          name: "Tesla",
+          url: "https://tesla-space-x-vercel-app.lovable.app",
+        }),
+      },
     ],
   }),
   component: Index,
@@ -200,7 +225,7 @@ function Index() {
         subtitle="Power your home around the clock."
         primaryLabel="Order Now"
         primaryTo="/energy"
-        secondaryLabel="Learn More"
+        secondaryLabel="Explore Powerwall"
         secondaryTo="/energy"
         textColor="light"
         imagePosition="center 50%"
@@ -217,7 +242,7 @@ function Index() {
         subtitle="Produce clean energy from your roof."
         primaryLabel="Order Now"
         primaryTo="/energy"
-        secondaryLabel="Learn More"
+        secondaryLabel="Solar Roof details"
         secondaryTo="/energy"
         textColor="light"
         imagePosition="center 50%"
@@ -232,7 +257,7 @@ function Index() {
         image={megapack}
         title="Megapack"
         subtitle="Utility-scale energy storage."
-        primaryLabel="Learn More"
+        primaryLabel="Explore Megapack"
         primaryTo="/energy"
         textColor="light"
         imagePosition="center 50%"

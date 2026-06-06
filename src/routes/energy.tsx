@@ -10,7 +10,25 @@ export const Route = createFileRoute("/energy")({
     meta: [
       { title: "Energy — Tesla" },
       { name: "description", content: "Tesla Solar Panels, Solar Roof, Powerwall and Megapack — clean energy generation and storage for homes, businesses and utilities." },
+      { property: "og:title", content: "Energy — Tesla" },
+      { property: "og:description", content: "Generate, store and deliver clean energy with Solar Roof, Powerwall and Megapack." },
+      { property: "og:url", content: "/energy" },
+      { property: "og:type", content: "product" },
     ],
+    scripts: [{
+      type: "application/ld+json",
+      children: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        name: "Tesla Energy Products",
+        itemListElement: [
+          { "@type": "Product", name: "Solar Panels", offers: { "@type": "Offer", price: "9999", priceCurrency: "USD" } },
+          { "@type": "Product", name: "Solar Roof", offers: { "@type": "Offer", price: "39999", priceCurrency: "USD" } },
+          { "@type": "Product", name: "Powerwall", offers: { "@type": "Offer", price: "9200", priceCurrency: "USD" } },
+          { "@type": "Product", name: "Megapack", offers: { "@type": "Offer", price: "1900000", priceCurrency: "USD" } },
+        ],
+      }),
+    }],
   }),
   component: EnergyPage,
 });
@@ -46,7 +64,7 @@ function EnergyPage() {
               </div>
               <div className="p-8">
                 <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-2">{p.category}</p>
-                <h3 className="text-2xl font-semibold tracking-tight mb-1">{p.name}</h3>
+                <h2 className="text-2xl font-semibold tracking-tight mb-1">{p.name}</h2>
                 <p className="text-sm text-muted-foreground mb-6">{p.tagline}</p>
                 <div className="flex items-end justify-between">
                   <div>
