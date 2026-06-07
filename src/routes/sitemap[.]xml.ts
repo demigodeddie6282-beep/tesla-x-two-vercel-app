@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
 
-const BASE_URL = "https://tesla-space-x-vercel-app.lovable.app";
+const BASE_URL = typeof window !== "undefined" ? window.location.origin : "https://tesla.com";
 
 interface SitemapEntry {
   path: string;
