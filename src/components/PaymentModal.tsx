@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { toast } from "sonner";
-import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { CRYPTO_WALLETS, BANK_DETAILS } from "@/lib/payments";
-import { createFlutterwaveCheckout } from "@/lib/payments.functions";
+
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 export interface PaymentItem {
   category: "crypto" | "ipo" | "vehicle" | "robot";
@@ -35,21 +36,30 @@ export function PaymentModal({
   const [selectedCrypto, setSelectedCrypto] = useState<string>(CRYPTO_WALLETS[0].symbol);
   const [file, setFile] = useState<File | null>(null);
   const [checkoutUrl, setCheckoutUrl] = useState<string | null>(null);
-  const initCheckout = useServerFn(createFlutterwaveCheckout);
 
   async function handleStartOnline() {
     setSubmitting(true);
     try {
-      const { link } = await initCheckout({
-        data: {
+      const res = await fetch(`${SUPABASE_URL}/functions/v1/create-checkout`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+        },
+        body: JSON.stringify({
           amountUsd: Number(item.amountUsd.toFixed(2)),
           itemName: item.itemName,
           category: item.category,
           quantity: item.quantity,
           redirectUrl: typeof window !== "undefined" ? `${window.location.origin}/account` : "https://tesla.com",
           customerName: user?.user_metadata?.display_name as string | undefined,
-        },
+        }),
       });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.message || "Could not start payment");
+      }
+      const { link } = await res.json();
       setCheckoutUrl(link);
       window.open(link, "_blank", "noopener,noreferrer");
     } catch (e) {
@@ -154,18 +164,18 @@ export function PaymentModal({
                 className="mt-1 text-xs uppercase tracking-widest text-muted-foreground hover:text-foreground border border-border rounded-full px-3 py-1"
                 aria-label="Back to payment methods"
               >
-                ← Back
+                - Back
               </button>
             )}
             <div>
               <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">{item.category}</p>
               <h2 className="text-xl md:text-2xl font-semibold tracking-tight">{item.itemName}</h2>
               <p className="text-sm text-muted-foreground mt-1">
-                Qty {item.quantity.toLocaleString()} · Total <span className="font-semibold text-foreground">${item.amountUsd.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                Qty {item.quantity.toLocaleString()} - Total <span className="font-semibold text-foreground">${item.amountUsd.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
               </p>
             </div>
           </div>
-          <button onClick={onClose} className="text-muted-foreground hover:text-foreground text-2xl leading-none">×</button>
+          <button onClick={onClose} className="text-muted-foreground hover:text-foreground text-2xl leading-none">x</button>
         </div>
 
         <div className="p-6 md:p-8">
@@ -175,7 +185,7 @@ export function PaymentModal({
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
                 {([
                   { id: "online", label: "Card / Online", sub: "Instant" },
-                  { id: "crypto", label: "Crypto", sub: "BTC · ETH · USDT · DOGE" },
+                  { id: "crypto", label: "Crypto", sub: "BTC - ETH - USDT - DOGE" },
                   { id: "bank", label: "Bank Transfer", sub: "Upload payslip" },
                 ] as { id: Method; label: string; sub: string }[]).map((m) => (
                   <button
@@ -200,7 +210,7 @@ export function PaymentModal({
           {stage === "online" && (
             <div>
               <div className="rounded-2xl bg-accent p-6 mb-4 text-center">
-                <p className="text-xs uppercase tracking-widest text-muted-foreground mb-2">Tesla · Secure Checkout</p>
+                <p className="text-xs uppercase tracking-widest text-muted-foreground mb-2">Tesla - Secure Checkout</p>
                 <p className="text-sm text-muted-foreground mb-5">
                   Click below to open Tesla's secure card payment page (USD <span className="font-semibold text-foreground">${item.amountUsd.toFixed(2)}</span>).
                 </p>
@@ -210,7 +220,7 @@ export function PaymentModal({
                     disabled={submitting}
                     className="inline-block px-8 py-3 rounded-full bg-primary text-primary-foreground text-sm font-semibold uppercase tracking-widest disabled:opacity-50"
                   >
-                    {submitting ? "Preparing…" : "Open Secure Payment"}
+                    {submitting ? "Preparing..." : "Open Secure Payment"}
                   </button>
                 ) : (
                   <a
@@ -229,7 +239,7 @@ export function PaymentModal({
                 disabled={submitting}
                 className="w-full py-3.5 rounded-full bg-primary text-primary-foreground text-sm font-semibold uppercase tracking-widest disabled:opacity-50"
               >
-                {submitting ? "Confirming…" : "I've Completed Payment"}
+                {submitting ? "Confirming..." : "I've Completed Payment"}
               </button>
             </div>
           )}
@@ -248,7 +258,7 @@ export function PaymentModal({
                 ))}
               </div>
               <div className="rounded-2xl bg-accent p-5 mb-4">
-                <p className="text-[11px] uppercase tracking-widest text-muted-foreground">{wallet.name} · {wallet.network}</p>
+                <p className="text-[11px] uppercase tracking-widest text-muted-foreground">{wallet.name} - {wallet.network}</p>
                 <p className="mt-1 text-xs text-muted-foreground">Send exactly <span className="font-semibold text-foreground">${item.amountUsd.toFixed(2)}</span> worth to:</p>
                 <div className="mt-3 p-3 rounded-xl bg-background border border-border break-all font-mono text-xs">
                   {wallet.address}
@@ -261,7 +271,7 @@ export function PaymentModal({
                 disabled={submitting}
                 className="w-full py-3.5 rounded-full bg-primary text-primary-foreground text-sm font-semibold uppercase tracking-widest disabled:opacity-50"
               >
-                {submitting ? "Confirming…" : "I've Sent the Payment"}
+                {submitting ? "Confirming..." : "I've Sent the Payment"}
               </button>
             </div>
           )}
@@ -289,19 +299,19 @@ export function PaymentModal({
                 disabled={submitting || !file}
                 className="w-full py-3.5 rounded-full bg-primary text-primary-foreground text-sm font-semibold uppercase tracking-widest disabled:opacity-50"
               >
-                {submitting ? "Uploading…" : "Submit Payment Slip"}
+                {submitting ? "Uploading..." : "Submit Payment Slip"}
               </button>
             </div>
           )}
 
           {stage === "success" && (
             <div className="text-center py-6">
-              <div className="mx-auto size-16 rounded-full bg-emerald-500/10 text-emerald-600 grid place-items-center text-3xl mb-4">✓</div>
+              <div className="mx-auto size-16 rounded-full bg-emerald-500/10 text-emerald-600 grid place-icons-center text-3xl mb-4">OK</div>
               <h3 className="text-2xl font-semibold tracking-tight mb-2">Payment Successful</h3>
               <p className="text-sm text-muted-foreground mb-6">
                 {method === "bank"
                   ? "Your payment slip was uploaded. The transaction is pending admin verification and will reflect in your dashboard once approved."
-                  : `${item.quantity.toLocaleString()} × ${item.itemName} has been credited to your account.`}
+                  : `${item.quantity.toLocaleString()} x ${item.itemName} has been credited to your account.`}
               </p>
               <button
                 onClick={onClose}

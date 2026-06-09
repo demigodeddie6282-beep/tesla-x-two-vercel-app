@@ -1,4 +1,4 @@
-import type { NavigateFn } from "@tanstack/react-router";
+import type { NavigateFunction } from "react-router-dom";
 
 export type CheckoutCategory = "crypto" | "ipo" | "vehicle" | "robot";
 
@@ -31,12 +31,12 @@ export function clearCheckout() {
 
 export function startCheckout(
   payload: CheckoutPayload,
-  opts: { isAuthed: boolean; navigate: NavigateFn },
+  opts: { isAuthed: boolean; navigate: NavigateFunction },
 ) {
   stashCheckout(payload);
   if (!opts.isAuthed) {
-    opts.navigate({ to: "/login" });
+    opts.navigate("/login");
   } else {
-    opts.navigate({ to: "/checkout" });
+    opts.navigate("/checkout");
   }
 }

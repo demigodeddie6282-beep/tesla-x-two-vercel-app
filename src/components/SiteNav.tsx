@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link } from "react-router-dom";
 import { Globe, User, Menu, X, LogOut } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
