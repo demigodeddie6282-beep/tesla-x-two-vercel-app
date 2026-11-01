@@ -56,7 +56,8 @@ export default function AccountPage() {
           <div>
             <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-2">Your account</p>
             <h1 className="text-4xl md:text-5xl font-semibold tracking-tight">
-              Welcome, {profile?.full_name ?? profile?.display_name ?? user?.email?.split("@")[0]}
+              Welcome, {profile?.display_name ?? user?.email?.split("@")[0]}
+
             </h1>
             <p className="text-sm text-muted-foreground mt-2">{user?.email}</p>
           </div>
