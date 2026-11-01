@@ -111,7 +111,6 @@ function VehicleCard({ v }: { v: typeof fleet[number] }) {
   const navigate = useNavigate();
   const unit = priceFor(qty, v.price);
   const discount = qty >= 3;
-  const authSession = session;
   return (
     <article className="bg-background rounded-3xl overflow-hidden border border-border">
       <div className="relative aspect-[16/10]">
@@ -168,6 +167,8 @@ export default function VehiclesPage() {
           <p className="mt-4 max-w-xl text-foreground/70">Sedans, SUVs, trucks and hypercars - all electric, all autonomous-ready.</p>
         </div>
       </section>
+
+      <FlightDemoSection />
 
       <section className="max-w-7xl mx-auto px-6 md:px-10 py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

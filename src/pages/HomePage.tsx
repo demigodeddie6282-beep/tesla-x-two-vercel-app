@@ -162,20 +162,20 @@ export default function HomePage() {
 
       <HeroPanel
         image={roadster}
-        eyebrow="Coming Soon"
-        title="Roadster"
-        subtitle="The quickest car in the world."
-        primaryLabel="Reserve"
+        eyebrow="New - Flight Demo"
+        title="New Roadster"
+        subtitle="The quickest car in the world. Now with SpaceX hover flight mode - watch the demo fly."
+        primaryLabel="Order Now"
         primaryTo="/vehicles"
-        secondaryLabel="Specs"
-        secondaryTo="/vehicles"
+        secondaryLabel="Watch Flight Demo"
+        secondaryTo="/vehicles#flight-demo"
         textColor="light"
         imagePosition="center 55%"
         specs={[
           { label: "0-60 mph", value: "1.9 s" },
           { label: "Top Speed", value: "250+ mph" },
           { label: "Range", value: "620 mi" },
-          { label: "From", value: "$200,000" },
+          { label: "Flight", value: "Hover Mode" },
         ]}
       />
 
