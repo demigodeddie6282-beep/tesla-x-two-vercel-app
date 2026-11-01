@@ -29,6 +29,8 @@ function priceFor(qty: number, base: number) {
 
 function FlightDemoSection() {
   const [telemetry, setTelemetry] = useState({ alt: 1.0, thrust: 42 });
+  const { session } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const id = setInterval(() => {
@@ -86,7 +88,7 @@ function FlightDemoSection() {
         </p>
         <div className="mt-8 flex flex-col md:flex-row gap-3">
           <button
-            onClick={() => startCheckout({ category: "vehicle", itemName: "New Roadster", amountUsd: 200000, quantity: 1, metadata: { tagline: "SpaceX package - hover flight mode" } }, { isAuthed: !!authSession, navigate })}
+            onClick={() => startCheckout({ category: "vehicle", itemName: "New Roadster", amountUsd: 200000, quantity: 1, metadata: { tagline: "SpaceX package - hover flight mode" } }, { isAuthed: !!session, navigate })}
             className="btn-hero btn-hero-dark-primary"
           >
             Reserve Now
